@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="dao" uuid="25aa8e80-c9ce-41c8-a2dc-18de941d453e">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/dao</jdbc-url>
+      <driver-properties>
+        <property name="timezone" value="utc0" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="dao_test" uuid="68038981-8e5c-4b96-92c3-cb032c321991">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/dao_test</jdbc-url>
+    </data-source>
+  </component>
+</project>
