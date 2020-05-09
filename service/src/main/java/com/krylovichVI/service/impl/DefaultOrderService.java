@@ -5,11 +5,11 @@ import com.krylovichVI.dao.imp.DefaultOrderDao;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Order;
 import com.krylovichVI.pojo.Status;
-import com.krylovichVI.pojo.dto.OrderDTO;
 import com.krylovichVI.service.OrderService;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultOrderService implements OrderService {
@@ -29,13 +29,20 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getOrders() {
+    public List<Order> getOrders() {
         return orderDao.getOrders();
     }
 
     @Override
-    public List<OrderDTO> getOrdersOfUser(AuthUser authUser) {
-        return orderDao.getOrdersOfUser(authUser);
+    public List<Order> getOrdersOfUser(AuthUser authUser) {
+        List<Order> orders = orderDao.getOrders();
+        List<Order> result = new ArrayList<>();
+        for(Order order : orders){
+            if(order.getAuthUser().equals(authUser)){
+                result.add(order);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -45,7 +52,7 @@ public class DefaultOrderService implements OrderService {
                 orderName = "Default order";
             }
             Order order = new Order(authUser, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, orderName);
-            return orderDao.addOrder(order);
+            return orderDao.addOrder(authUser,order);
         }else {
             return -1;
         }
@@ -53,7 +60,8 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public void deleteOrder(Long orderId) {
-        orderDao.deleteOrder(orderId);
+        Order order = orderDao.getOrderById(orderId);
+        orderDao.deleteOrder(order);
     }
 
     @Override
@@ -61,6 +69,7 @@ public class DefaultOrderService implements OrderService {
         Order orderById = getOrderById(id);
         if(orderById != null) {
             orderById.setStatus(Status.valueOf(status));
+            orderById.setDateUpdate(Date.valueOf(LocalDate.now()));
             orderDao.updateStatusOrder(orderById);
             return orderById.getId();
         }else{

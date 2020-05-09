@@ -1,7 +1,7 @@
 package com.krylovichVI.servlet.servlets;
 
 import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.dto.BlackListDTO;
+import com.krylovichVI.pojo.BlackList;
 import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.BlackListService;
 import com.krylovichVI.service.impl.DefaultAuthUserService;
@@ -34,7 +34,7 @@ public class BlackListServlet extends HttpServlet {
         String errorBlackList = (String) req.getSession().getAttribute("errorBlackList");
         req.getSession().removeAttribute("errorBlackList");
 
-        List<BlackListDTO> usersOfBlackList = blackListService.getUsersOfBlackList();
+        List<BlackList> usersOfBlackList = blackListService.getUsersOfBlackList();
         req.setAttribute("usersOfBlackList", usersOfBlackList);
         req.setAttribute("errorBlackList", errorBlackList);
 

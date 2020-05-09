@@ -1,13 +1,16 @@
 package com.krylovichVI.dao.imp;
 
-import com.krylovichVI.dao.JDBCConnection;
 import com.krylovichVI.dao.UserDao;
+import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.util.List;
 
 public class DefaultUserDao implements UserDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultUserDao.class);
@@ -23,77 +26,81 @@ public class DefaultUserDao implements UserDao {
         return instance;
     }
 
-    private Connection getConnection() {
-        return JDBCConnection.getInstance().getConnection();
+    @Override
+    public long addUserInfo( User user) {
+        Transaction transaction = null;
+        try (Session session = SessionUtil.openSession()) {
+            transaction = session.getTransaction();
+            transaction.begin();
+            Long id = (Long) session.save(user);
+            logger.info("user {} {} add info {}", user.getFirstName(), user.getLastName(), user.getUserInfo());
+            transaction.commit();
+            return id;
+        } catch (HibernateException e) {
+            transaction.rollback();
+            logger.error("user {} error add info ", user.getFirstName(), user.getLastName(), user.getUserInfo(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public long addUserInfo(Long auth_id, User user) {
-        String sql = "INSERT INTO user(first_name, last_name, phone, email, auth_id) VALUES(?,?,?,?,?)";
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ) {
-            insertAndUpdateSQL(auth_id, user, preparedStatement);
-            logger.info("user {} add info ", auth_id, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                generatedKeys.next();
-                return generatedKeys.getLong(1);
+    public void updateUserInfo(User user, Long id) {
+        String sql = "UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName," +
+                " u.userInfo.phone = :phone, u.userInfo.email = :email where u.id = :id";
+        Transaction transaction = null;
+        try (Session session = SessionUtil.openSession()) {
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.createQuery(sql)
+                    .setParameter("firstName", user.getFirstName())
+                    .setParameter("lastName", user.getLastName())
+                    .setParameter("email", user.getUserInfo().getEmail())
+                    .setParameter("phone", user.getUserInfo().getPhone())
+                    .setParameter("id", id)
+                    .executeUpdate();
+            transaction.commit();
+            logger.info("user {} update info ", user.getFirstName(), user.getLastName(), user.getUserInfo());
+        } catch (HibernateException e) {
+            transaction.rollback();
+            logger.error("user {} error update info ", user.getFirstName(), user.getLastName(), user.getUserInfo(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    public void deleteUserInfo(User user) {
+        Transaction transaction = null;
+        try(Session session = SessionUtil.openSession()){
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.delete(user);
+            transaction.commit();
+        } catch (HibernateException e){
+            transaction.rollback();
+            logger.error("user {} error delete user ", user.getFirstName(), user.getLastName(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User getUserByAuthUser(AuthUser authUser) {
+        Transaction transaction = null;
+        String sql = "SELECT u from User u where u.authUser = :authUser";
+        try(Session session = SessionUtil.openSession()) {
+            transaction = session.getTransaction();
+            transaction.begin();
+            List<User> user = (List<User>) session.createQuery(sql).setParameter("authUser", authUser).getResultList();
+            transaction.commit();
+            if (user.isEmpty()){
+                return null;
+            } else {
+                return user.get(0);
             }
-
-        } catch (SQLException e) {
-            logger.error("user {} error add info ", auth_id, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), e);
+        } catch (HibernateException e) {
+            transaction.rollback();
+            logger.error("user {} error get by Id info ", authUser, e);
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void updateUserInfo(Long auth_id, User user) {
-        String sql = "UPDATE user SET first_name = ?, last_name = ?, phone = ?, email = ? WHERE auth_id = ?";
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            insertAndUpdateSQL(auth_id, user, preparedStatement);
-            logger.info("user {} update info ", auth_id, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
-        } catch (SQLException e) {
-            logger.error("user {} error update info ", auth_id, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void insertAndUpdateSQL(Long auth_id, User user, PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, user.getFirstName());
-        preparedStatement.setString(2, user.getLastName());
-        preparedStatement.setString(3, user.getPhone());
-        preparedStatement.setString(4, user.getEmail());
-        preparedStatement.setLong(5, auth_id);
-        preparedStatement.executeUpdate();
-    }
-
-
-    @Override
-    public User getUserByAuthId(AuthUser authUser) {
-        String sql = "SELECT * FROM user inner join auth_user on auth_id = auth_user.id where auth_user.id = ?";
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
-            preparedStatement.setLong(1, authUser.getId());
-
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
-                while(resultSet.next()){
-                    return new User(
-                            resultSet.getLong("id"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
-                            resultSet.getString("phone"),
-                            resultSet.getString("email"),
-                            authUser
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("user {} error get by Id info ", authUser.getUsername(), e);
-            throw new RuntimeException(e);
-        }
-        return null;
     }
 }

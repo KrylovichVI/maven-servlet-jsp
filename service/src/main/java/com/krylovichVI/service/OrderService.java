@@ -2,14 +2,13 @@ package com.krylovichVI.service;
 
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Order;
-import com.krylovichVI.pojo.dto.OrderDTO;
 
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDTO> getOrders();
+    List<Order> getOrders();
 
-    List<OrderDTO> getOrdersOfUser(AuthUser authUser);
+    List<Order> getOrdersOfUser(AuthUser authUser);
 
     long addOrder(String orderName, AuthUser authUser);
 

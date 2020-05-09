@@ -2,18 +2,17 @@ package com.krylovichVI.dao;
 
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Order;
-import com.krylovichVI.pojo.dto.OrderDTO;
 
 import java.util.List;
 
 public interface OrderDao {
-    List<OrderDTO> getOrders();
+    List<Order> getOrders();
 
-    List<OrderDTO> getOrdersOfUser(AuthUser authUser);
+//    List<Order> getOrdersOfUser(AuthUser authUser);
 
-    long addOrder(Order order);
+    long addOrder(AuthUser authUser, Order order);
 
-    void deleteOrder(Long orderId);
+    void deleteOrder(Order order);
 
     void updateStatusOrder(Order order);
 

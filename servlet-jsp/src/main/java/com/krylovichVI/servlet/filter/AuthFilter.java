@@ -1,7 +1,6 @@
 package com.krylovichVI.servlet.filter;
 
 import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.servlet.WebUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -14,7 +13,6 @@ import java.io.IOException;
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override

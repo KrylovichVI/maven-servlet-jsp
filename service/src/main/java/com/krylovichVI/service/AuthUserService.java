@@ -6,7 +6,7 @@ import java.util.List;
 public interface AuthUserService {
     AuthUser getByLogin(String login);
 
-    long saveAuthUser(AuthUser authUser);
+    long saveAuthUser(String username, String password, String role);
 
     AuthUser login(String username, String password);
 

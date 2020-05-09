@@ -25,22 +25,17 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public long addUserInfo(Long auth_user_id, User user) {
-        return userDao.addUserInfo(auth_user_id, user);
-    }
-
-    @Override
-    public void updateUserInfo(Long id, User user) {
-        userDao.updateUserInfo(id, user);
-    }
-
-    @Override
-    public User getUserByAuthId(AuthUser authUser) {
-        User userByAuthId = userDao.getUserByAuthId(authUser);
-        if(userByAuthId == null){
-            userDao.addUserInfo(authUser.getId(), new User("", "", "", "", authUser));
-            userByAuthId = userDao.getUserByAuthId(authUser);
+    public void updateUserInfo(User user) {
+        User userByAuthId = userDao.getUserByAuthUser(user.getAuthUser());
+        if(userByAuthId != null){
+            userDao.updateUserInfo(user, userByAuthId.getId());
+        } else {
+            userDao.addUserInfo(user);
         }
-        return userByAuthId;
+    }
+
+    @Override
+    public User getUserByAuthUser(AuthUser authUser) {
+        return userDao.getUserByAuthUser(authUser);
     }
 }

@@ -8,11 +8,12 @@ import com.krylovichVI.service.BookService;
 import java.util.List;
 
 public class DefaultBookService implements BookService {
+    private final int COUNT_ELEMENT_OF_PAGE = 5;
     private static BookService instance;
-    private BookDao authUserDao;
+    private BookDao bookDao;
 
     private DefaultBookService(){
-        authUserDao = DefaultBookDao.getInstance();
+        bookDao = DefaultBookDao.getInstance();
     }
 
     public static BookService getInstance(){
@@ -27,11 +28,37 @@ public class DefaultBookService implements BookService {
 
     @Override
     public List<Book> getBooks() {
-        return authUserDao.getBooks();
+        return bookDao.getBooksByPage();
     }
 
     @Override
     public long addBook(Book book) {
-        return authUserDao.addBook(book);
+        return bookDao.addBook(book);
+    }
+
+    @Override
+    public void deleteBook(Long id) {
+        Book bookById = bookDao.getBookById(id);
+        bookDao.deleteBook(bookById);
+    }
+
+    @Override
+    public int getCountOfPage() {
+        int countOfRow = bookDao.getCountOfRow();
+        if(countOfRow % 5 != 0){
+            return (int) Math.ceil((double) bookDao.getCountOfRow() / 5);
+        } else {
+            return countOfRow / 5;
+        }
+    }
+
+    @Override
+    public List<Book> getBooksByPage(int page) {
+        List<Book> books = bookDao.getBooksByPage(COUNT_ELEMENT_OF_PAGE, page);
+        if(!books.isEmpty()){
+            return books;
+        } else {
+            return null;
+        }
     }
 }

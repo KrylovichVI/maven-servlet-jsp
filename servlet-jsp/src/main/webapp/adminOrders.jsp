@@ -13,6 +13,7 @@
         <th scope="col">Order name</th>
         <th scope="col">Username</th>
         <th scope="col">Data open order</th>
+        <th scope="col">Data update Status</th>
         <th scope="col">Status order</th>
         <th scope="col">Action</th>
     </tr>
@@ -21,16 +22,17 @@
     <c:forEach items="${usersOrders}" var="user" >
         <tr>
             <td><c:out value="${user.id}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.orderName}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.username}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.date}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.name}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.authUser.username}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.dateCreate}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.dateUpdate}" default="-" escapeXml="true"/></td>
             <td><c:out value="${user.status}" default="defaultValue" escapeXml="true"/></td>
             <td>
                 <form action="${pageContext.request.contextPath}/deleteOrderServlet" method="post" >
                     <button type="submit" class="btn btn-primary" name="${user.id}">Delete</button>
                 </form>
             </td>
-        </tr>`
+        </tr>
     </c:forEach>
     </tbody>
 </table>

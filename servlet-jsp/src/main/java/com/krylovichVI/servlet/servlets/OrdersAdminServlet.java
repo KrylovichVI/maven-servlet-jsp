@@ -1,6 +1,6 @@
 package com.krylovichVI.servlet.servlets;
 
-import com.krylovichVI.pojo.dto.OrderDTO;
+import com.krylovichVI.pojo.Order;
 import com.krylovichVI.service.OrderService;
 import com.krylovichVI.service.impl.DefaultOrderService;
 import com.krylovichVI.servlet.WebUtils;
@@ -29,7 +29,7 @@ public class OrdersAdminServlet extends HttpServlet {
         Boolean idError = (Boolean) req.getSession().getAttribute("idError");
         req.getSession().removeAttribute("idError");
 
-        List<OrderDTO> usersOrders = orderService.getOrders();
+        List<Order> usersOrders = orderService.getOrders();
         req.setAttribute("usersOrders", usersOrders);
         req.setAttribute("idError", idError);
         WebUtils.forwardToJsp("adminOrders", req, resp);

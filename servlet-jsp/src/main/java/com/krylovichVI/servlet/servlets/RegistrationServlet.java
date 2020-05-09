@@ -1,10 +1,8 @@
 package com.krylovichVI.servlet.servlets;
 
-import com.krylovichVI.servlet.WebUtils;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.Role;
 import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.impl.DefaultAuthUserService;
+import com.krylovichVI.servlet.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +32,7 @@ public class RegistrationServlet extends HttpServlet {
         String role = req.getParameter("role-reg");
 
         if(!login.isEmpty()  && !password.isEmpty()){
-            authUserService.saveAuthUser(new AuthUser(login, password, Role.valueOf(role)));
+            authUserService.saveAuthUser(login, password, role);
             WebUtils.sendRedirect( "/login", req, resp);
         } else {
             WebUtils.sendRedirect( "/registration", req, resp);

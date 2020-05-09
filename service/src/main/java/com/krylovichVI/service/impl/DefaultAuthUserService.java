@@ -3,6 +3,9 @@ package com.krylovichVI.service.impl;
 import com.krylovichVI.dao.AuthUserDao;
 import com.krylovichVI.dao.imp.DefaultAuthUserDao;
 import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.pojo.Role;
+import com.krylovichVI.pojo.User;
+import com.krylovichVI.pojo.UserInfo;
 import com.krylovichVI.service.AuthUserService;
 
 import java.util.List;
@@ -25,14 +28,16 @@ public class DefaultAuthUserService implements AuthUserService {
         }
     }
 
-
     @Override
     public AuthUser getByLogin(String login) {
         return authUserDao.getByLogin(login);
     }
 
     @Override
-    public long saveAuthUser(AuthUser authUser) {
+    public long saveAuthUser(String username, String password, String role) {
+        User userEmpty = new User("", "", new UserInfo("", ""), null);
+        AuthUser authUser = new AuthUser(username, password, Role.valueOf(role), userEmpty);
+        userEmpty.setAuthUser(authUser);
         return authUserDao.saveAuthUser(authUser);
     }
 

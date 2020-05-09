@@ -1,7 +1,7 @@
 package com.krylovichVI.servlet.servlets;
 
 import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.dto.OrderDTO;
+import com.krylovichVI.pojo.Order;
 import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.OrderService;
 import com.krylovichVI.service.impl.DefaultAuthUserService;
@@ -32,7 +32,7 @@ public class OrdersUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AuthUser authUser = (AuthUser) req.getSession().getAttribute("authUser");
-        List<OrderDTO> userOrders = orderService.getOrdersOfUser(authUser);
+        List<Order> userOrders = orderService.getOrdersOfUser(authUser);
         req.setAttribute("userOrders", userOrders);
         WebUtils.forwardToJsp("userOrders", req, resp);
 

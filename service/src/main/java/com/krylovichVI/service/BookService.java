@@ -7,5 +7,11 @@ import java.util.List;
 public interface BookService {
     List<Book> getBooks();
 
-    long addBook(Book user);
+    long addBook(Book book);
+
+    void deleteBook(Long id);
+
+    int getCountOfPage();
+
+    List<Book> getBooksByPage(int page);
 }

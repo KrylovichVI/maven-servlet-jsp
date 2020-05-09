@@ -4,9 +4,11 @@ import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
 
 public interface UserDao {
-    long addUserInfo(Long auth_user_id, User user);
+    long addUserInfo(User user);
 
-    void updateUserInfo(Long id, User user);
+    void updateUserInfo(User user, Long id);
 
-    User getUserByAuthId(AuthUser authUser);
+    User getUserByAuthUser(AuthUser authUser);
+
+    void deleteUserInfo(User user);
 }

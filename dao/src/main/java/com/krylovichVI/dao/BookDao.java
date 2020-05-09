@@ -4,7 +4,15 @@ import com.krylovichVI.pojo.Book;
 import java.util.List;
 
 public interface BookDao {
-    List<Book> getBooks();
+    List<Book> getBooksByPage();
 
-    long addBook(Book user);
+    long addBook(Book book);
+
+    void deleteBook(Book book);
+
+    Book getBookById(Long id);
+
+    List<Book> getBooksByPage(int countElement, int page);
+
+    int getCountOfRow();
 }

@@ -9,13 +9,13 @@
 <h3>User info</h3>
         <div class="container ml-4">
             <label>First Name: </label>
-            <p class="font-weight-bold"> <c:out value="${userInfo.firstName}" default="defaultValue" escapeXml="true"/></p>
+            <p class="font-weight-bold"> <c:out value="${userInf.firstName}" default="defaultValue" escapeXml="true"/></p>
             <label>Last Name: </label>
-            <p class="font-weight-bolder"> <c:out value="${userInfo.lastName}" default="defaultValue" escapeXml="true"/></p>
+            <p class="font-weight-bolder"> <c:out value="${userInf.lastName}" default="defaultValue" escapeXml="true"/></p>
             <label>Phone: </label>
-            <p class="font-weight-normal"> <c:out value="${userInfo.phone}" default="defaultValue" escapeXml="true"/></p>
+            <p class="font-weight-normal"> <c:out value="${userInf.userInfo.phone}" default="defaultValue" escapeXml="true"/></p>
             <label>Email: </label>
-            <p class="font-weight-light"><c:out value="${userInfo.email}" default="defaultValue" escapeXml="true"/></p>
+            <p class="font-weight-light"><c:out value="${userInf.userInfo.email}" default="defaultValue" escapeXml="true"/></p>
             <label>Username: </label>
             <p class="font-weight-bold"><c:out value="${authUser.username}" default="defaultValue" escapeXml="true"/></p>
             <label>Role: </label>

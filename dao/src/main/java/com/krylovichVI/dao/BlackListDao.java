@@ -1,16 +1,13 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.dto.BlackListDTO;
+import com.krylovichVI.pojo.BlackList;
 
 import java.util.List;
 
 public interface BlackListDao {
-    long addUserInBlackList(AuthUser authUser);
+    void addUserInBlackList(BlackList blackList);
 
-    void deleteUserOfBlackList(AuthUser authUser);
+    void deleteUserOfBlackList(BlackList blackList);
 
-    boolean existUserInBlackList(AuthUser authUser);
-
-    List<BlackListDTO> getUsersOfBlackList();
+    List<BlackList> getUsersOfBlackList();
 }

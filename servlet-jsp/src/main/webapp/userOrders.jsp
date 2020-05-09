@@ -19,8 +19,8 @@
     <c:forEach items="${userOrders}" var="user" >
         <tr>
             <td><c:out value="${user.id}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.orderName}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.date}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.name}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.dateCreate}" default="defaultValue" escapeXml="true"/></td>
             <td><c:out value="${user.status}" default="defaultValue" escapeXml="true"/></td>
         </tr>
     </c:forEach>

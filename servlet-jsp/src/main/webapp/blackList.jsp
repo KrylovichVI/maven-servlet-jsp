@@ -17,9 +17,9 @@
     <tbody>
     <c:forEach items="${usersOfBlackList}" var="user" >
         <tr>
-            <td><c:out value="${user.username}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.authUser.username}" default="defaultValue" escapeXml="true"/></td>
             <td><c:out value="${user.dateBlock}" default="defaultValue" escapeXml="true"/></td>
-            <td><c:out value="${user.role}" default="defaultValue" escapeXml="true"/></td>
+            <td><c:out value="${user.authUser.role}" default="defaultValue" escapeXml="true"/></td>
         </tr>
     </c:forEach>
     </tbody>

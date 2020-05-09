@@ -7,7 +7,7 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/dao</jdbc-url>
       <driver-properties>
-        <property name="timezone" value="utc0" />
+        <property name="serverTimezone" value="UTC" />
       </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="dao_test" uuid="68038981-8e5c-4b96-92c3-cb032c321991">
@@ -15,6 +15,9 @@
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/dao_test</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

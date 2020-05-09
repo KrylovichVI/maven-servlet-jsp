@@ -1,16 +1,14 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.BlackListDao;
-import com.krylovichVI.dao.JDBCConnection;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.Role;
-import com.krylovichVI.pojo.dto.BlackListDTO;
+import com.krylovichVI.dao.utils.SessionUtil;
+import com.krylovichVI.pojo.BlackList;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultBlackListDao implements BlackListDao {
@@ -28,89 +26,67 @@ public class DefaultBlackListDao implements BlackListDao {
         return instance;
     }
 
-    private Connection getConnection() {
-        return JDBCConnection.getInstance().getConnection();
-    }
-
     @Override
-    public long addUserInBlackList(AuthUser authUser) {
-        String sql = "insert into black_list(date_block, auth_user_id) values (?, ?)";
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ){
-            preparedStatement.setDate(1, Date.valueOf(LocalDate.now()));
-            preparedStatement.setLong(2, authUser.getId());
-            preparedStatement.executeUpdate();
-            logger.info("black list {} add ", authUser.getUsername());
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                generatedKeys.next();
-                return generatedKeys.getLong(1);
-            }
-        } catch (SQLException e) {
-            logger.error("black list {} error add ", authUser.getUsername(), e);
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Override
-    public void deleteUserOfBlackList(AuthUser authUser) {
-        String sql = "delete from black_list where auth_user_id = ?";
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setLong(1, authUser.getId());
-            preparedStatement.executeUpdate();
-            logger.info("black list {} delete ", authUser.getUsername());
-        } catch (SQLException e) {
-            logger.error("black list {} error delete ", authUser.getUsername(), e);
+    public void addUserInBlackList(BlackList blackList) {
+        Transaction transaction = null;
+        try(Session session = SessionUtil.openSession()){
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.save(blackList);
+            logger.info("black list {} add ", blackList.getDateBlock());
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            logger.error("black list {} error add ", blackList.getDateBlock(), e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean existUserInBlackList(AuthUser authUser) {
-        String sql = "select * from black_list where auth_user_id = ?";
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ){
-            preparedStatement.setLong(1, authUser.getId());
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
-
-                if (resultSet.next() && resultSet.getLong("auth_user_id") == authUser.getId()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("black list {} error of exist ", authUser.getUsername(), e);
+    public void deleteUserOfBlackList(BlackList blackList) {
+        Transaction transaction = null;
+        try(Session session = SessionUtil.openSession()){
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.remove(blackList);
+            transaction.commit();
+            logger.info("black list {} delete ", blackList.getId());
+        } catch (HibernateException e) {
+            transaction.rollback();
+            logger.error("black list {} error delete ", blackList.getId(), e);
             throw new RuntimeException(e);
         }
     }
 
+
+//    @Override
+//    public void updateBlackList(BlackList blackList) {
+//        Transaction transaction = null;
+//        try(Session session = SessionUtil.openSession()){
+//            transaction = session.getTransaction();
+//            transaction.begin();
+//            session.update(blackList);
+//            transaction.commit();
+//        } catch (HibernateException e){
+//            transaction.rollback();
+//            logger.error("black list {} error update ", blackList.getId(), e);
+//            throw new RuntimeException(e);
+//        }
+//    }
+
     @Override
-    public List<BlackListDTO> getUsersOfBlackList() {
-        String sql = "SELECT auth_user.id, username, role, date_block  FROM auth_user " +
-                "inner join black_list on auth_user.id = black_list.auth_user_id;";
-        List<BlackListDTO> users = new ArrayList<>();
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ){
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()){
-                    users.add(new BlackListDTO(
-                            resultSet.getLong("id"),
-                            resultSet.getString("username"),
-                            resultSet.getDate("date_block"),
-                            Role.valueOf(resultSet.getString("role"))
-                    ));
-                }
-                return users;
-            }
-        } catch (SQLException e) {
-            logger.error("black list {} error get List of Users", e);
-            throw new RuntimeException(e);
+    public List<BlackList> getUsersOfBlackList() {
+        String sql = "select b from BlackList b";
+        Transaction transaction;
+        try(Session session = SessionUtil.openSession()){
+            transaction = session.getTransaction();
+            transaction.begin();
+            List<BlackList> resultList = session.createQuery(sql).getResultList();
+            transaction.commit();
+            return resultList;
         }
     }
 }
+
+
 

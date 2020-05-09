@@ -12,4 +12,6 @@ public interface AuthUserDao {
     List<AuthUser> getUsers();
 
     AuthUser getById(Long id);
+
+    void deleteAuthUser(AuthUser authUser);
 }

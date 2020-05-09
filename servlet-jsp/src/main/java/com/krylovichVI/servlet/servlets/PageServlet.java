@@ -1,11 +1,8 @@
 package com.krylovichVI.servlet.servlets;
 
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.service.AuthUserService;
-import com.krylovichVI.service.BookService;
-import com.krylovichVI.service.impl.DefaultAuthUserService;
-import com.krylovichVI.service.impl.DefaultBookService;
 import com.krylovichVI.pojo.Book;
+import com.krylovichVI.service.BookService;
+import com.krylovichVI.service.impl.DefaultBookService;
 import com.krylovichVI.servlet.WebUtils;
 
 import javax.servlet.ServletException;
@@ -18,24 +15,29 @@ import java.util.List;
 
 @WebServlet(name = "pageServlet", urlPatterns = "/page")
 public class PageServlet extends HttpServlet {
+    private final int FIRST_PAGE = 1;
     private BookService bookService;
-    private AuthUserService authUserService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         bookService = DefaultBookService.getInstance();
-        authUserService = DefaultAuthUserService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Book> books = bookService.getBooks();
-        if(!books.isEmpty()) {
-            req.setAttribute("booksList", books);
-        }else{
-            req.setAttribute("booksList", null);
+        String  currentPgs = req.getParameter("page");
+        Integer currentPage;
+        if(currentPgs == null){
+            currentPage = FIRST_PAGE;
+        } else {
+            currentPage = Integer.valueOf(currentPgs);
         }
+        List<Book> books = bookService.getBooksByPage(currentPage);
+
+        req.setAttribute("booksList", books);
+        req.setAttribute("countPage", bookService.getCountOfPage());
+        req.setAttribute("currentPage", currentPage);
 
         WebUtils.forwardToJsp("page", req, resp);
     }
@@ -44,7 +46,6 @@ public class PageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String bookName = req.getParameter("bookName");
         String author = req.getParameter("author");
-
         if(!bookName.isEmpty() && !author.isEmpty()){
             bookService.addBook(new Book(bookName, author));
         }
