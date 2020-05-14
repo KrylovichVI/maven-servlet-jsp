@@ -17,6 +17,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.krylovichVI.pojo</groupId>
             <artifactId>pojo</artifactId>
             <version>${project.version}</version>
