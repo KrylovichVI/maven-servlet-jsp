@@ -35,7 +35,7 @@ public class AuthUser {
     @OneToOne(mappedBy = "authUser", cascade = CascadeType.ALL)
     private User user;
 
-    @OneToOne(mappedBy = "authUser", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "authUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private BlackList blackList;
 
     @OneToMany(mappedBy = "authUser",cascade = {CascadeType.PERSIST, CascadeType.REFRESH})

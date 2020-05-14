@@ -36,9 +36,8 @@ public class DefaultAuthUserService implements AuthUserService {
     @Override
     public long saveAuthUser(String username, String password, String role) {
         User userEmpty = new User("", "", new UserInfo("", ""), null);
-        AuthUser authUser = new AuthUser(username, password, Role.valueOf(role), userEmpty);
-        userEmpty.setAuthUser(authUser);
-        return authUserDao.saveAuthUser(authUser);
+        AuthUser authUser = new AuthUser(username, password, Role.valueOf(role), null);
+        return authUserDao.saveAuthUser(authUser, userEmpty);
     }
 
     @Override

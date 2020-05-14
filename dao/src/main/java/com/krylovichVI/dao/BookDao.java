@@ -1,10 +1,12 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.pojo.Book;
+import com.krylovichVI.pojo.Page;
+
 import java.util.List;
 
 public interface BookDao {
-    List<Book> getBooksByPage();
+    List<Book> getAllBooks();
 
     long addBook(Book book);
 
@@ -12,7 +14,7 @@ public interface BookDao {
 
     Book getBookById(Long id);
 
-    List<Book> getBooksByPage(int countElement, int page);
+    List<Book> getBooksByPage(Page page);
 
-    int getCountOfRow();
+    long getCountOfRow();
 }

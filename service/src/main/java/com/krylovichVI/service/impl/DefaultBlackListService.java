@@ -32,9 +32,8 @@ public class DefaultBlackListService implements BlackListService {
     public void addUserInBlackList(AuthUser authUser) {
         boolean existUser = existUserInBlackList(authUser);
         if(!existUser){
-            BlackList blackListOfCurrentUser = new BlackList(Date.valueOf(LocalDate.now()), authUser);
-            authUser.setBlackList(blackListOfCurrentUser);
-            blackListDao.addUserInBlackList(blackListOfCurrentUser);
+            BlackList blackListOfCurrentUser = new BlackList(Date.valueOf(LocalDate.now()), null);
+            blackListDao.addUserInBlackList(authUser, blackListOfCurrentUser);
         }
     }
 

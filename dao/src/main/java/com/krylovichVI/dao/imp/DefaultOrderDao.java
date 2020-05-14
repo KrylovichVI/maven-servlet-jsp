@@ -3,7 +3,9 @@ package com.krylovichVI.dao.imp;
 import com.krylovichVI.dao.OrderDao;
 import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Order;
+import com.krylovichVI.pojo.Page;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -14,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultOrderDao implements OrderDao {
+public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultOrderDao.class);
     private static OrderDao instance;
 
@@ -36,14 +38,19 @@ public class DefaultOrderDao implements OrderDao {
     }
 
     @Override
-    public long addOrder(AuthUser authUser, Order order) {
+    public long addOrder(AuthUser authUser, Order order, List<Book> book) {
         Transaction transaction = null;
         try(Session session = SessionUtil.openSession()){
             transaction = session.getTransaction();
             transaction.begin();
             session.lock(authUser, LockMode.UPGRADE_NOWAIT);
             authUser.getOrderList().add(order);
+            order.getBookSet().addAll(book);
             long id = (Long) session.save(order);
+            for(Book myBook : book){
+                session.lock(myBook, LockMode.UPGRADE_NOWAIT);
+                myBook.getOrderList().add(order);
+            }
             transaction.commit();
             logger.info("order {} add ", order.getAuthUser().getUsername(), order.getName());
             return id;
@@ -86,36 +93,8 @@ public class DefaultOrderDao implements OrderDao {
         }
     }
 
-//    @Override
-//    public List<Order> getOrdersOfUser(AuthUser authUser) {
-//        String sql = "SELECT orders.id, name, auth_user.username, date, status FROM orders " +
-//                "inner join auth_user on auth_user.id = orders.auth_user_id where auth_user.username = ?";
-//        List<Order> listOrderOfUser = new ArrayList<>();
-//        Transaction transaction;
-//        try(Session session = SessionUtil.openSession()){
-//            transaction = session.getTransaction();
-//            transaction.begin();
-//            transaction.commit();
-//
-//            preparedStatement.setString(1, authUser.getUsername());
-//
-//            try(ResultSet resultSet = preparedStatement.executeQuery()){
-//                while (resultSet.next()){
-//                    listOrderOfUser.add(new OrderDTO(
-//                            resultSet.getLong("id"),
-//                            resultSet.getString("name"),
-//                            resultSet.getDate("date"),
-//                            Status.valueOf(resultSet.getString("status"))
-//                            ));
-//                }
-//            }
-//        }
-//        return listOrderOfUser;
-//    }
-
     @Override
     public Order getOrderById(Long id) {
-        String sql = "select * from orders where orders.id = ?";
         Transaction transaction;
         try(Session session = SessionUtil.openSession()){
             transaction = session.getTransaction();
@@ -124,5 +103,28 @@ public class DefaultOrderDao implements OrderDao {
             transaction.commit();
             return order;
         }
+    }
+
+    @Override
+    public List<Book> getBookByOrder() {
+        String sql = "Select b.id as id, b.name as name, b.author as author  from books as b " +
+                "inner join order_book as ob on  b.id = ob.bookId " +
+                "inner join orders as o on o.id = ob.orderId where o.status ='IN_PROCESSING'";
+        try(Session session = SessionUtil.openSession()){
+            session.getTransaction().begin();
+            List<Book> resultList = session.createNativeQuery(sql, Book.class).getResultList();
+            session.getTransaction().commit();
+            return resultList;
+        }
+    }
+
+    @Override
+    public List<Order> getListOrderByPage(Page page) {
+        return super.listOfPage(Order.class, page);
+    }
+
+    @Override
+    public long getCountOfRow() {
+        return super.countOfRow(Order.class);
     }
 }

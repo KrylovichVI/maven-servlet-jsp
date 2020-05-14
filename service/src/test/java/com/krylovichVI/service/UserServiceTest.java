@@ -1,21 +1,22 @@
 package com.krylovichVI.service;
+
 import com.krylovichVI.dao.UserDao;
+import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.User;
+import com.krylovichVI.pojo.UserInfo;
 import com.krylovichVI.service.impl.DefaultUserService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-@Disabled
 public class UserServiceTest {
     @Mock
     private UserDao userDao;
@@ -24,28 +25,20 @@ public class UserServiceTest {
     private DefaultUserService userService;
 
     @Test
-    void testOfAddUser(){
-//        AuthUser authUser = new AuthUser( "admin", "admin", Role.ADMIN);
-//        User user = new User("Vitali", "KrylovichVI", new UserInfo("+375291234567", "KrylovichVI@gmail.com"), authUser.getId());
-//        when(userDao.addUserInfo(user)).thenReturn(anyLong());
-//        long id = userService.addUserInfo(user);
-//        assertNotNull(id);
+    void testOfAddEmptyUser(){
+        AuthUser authUser = new AuthUser("admin", "admin", Role.ADMIN, null);
+        User user = new User("", "", new UserInfo("", ""), authUser);
+        when(userDao.getUserByAuthUser(authUser)).thenReturn(null);
+        userService.updateUserInfo(user);
+        verify(userDao, times(1)).addUserInfo(user);
     }
 
     @Test
-    void testByAuthId(){
-//        AuthUser authUser = new AuthUser( "admin", "admin", Role.ADMIN);
-//        User user = new User("KrylovichVI", "Vitali", new UserInfo("+375291234567", "KrylovichVI@gmail.com"), authUser.getId());
-//        when(userDao.getUserByAuthId(authUser.getId())).thenReturn(user);
-//        User userByAuthId = userService.getUserByAuthId(authUser.getId());
-//        assertEquals(userByAuthId.getId(), user.getId());
-    }
-
-    @Test
-    @Disabled
-    void testOfEmptyUser(){
-        doNothing().when(userDao).updateUserInfo(any(), anyLong());
-        userService.updateUserInfo(new User());
-        verify(userDao, times(1)).updateUserInfo(any(), anyLong());
+    void testOfGetUserByAuthUser(){
+        AuthUser authUser = new AuthUser("admin", "admin", Role.ADMIN, null);
+        User user = new User("", "", new UserInfo("", ""), authUser);
+        when(userDao.getUserByAuthUser(authUser)).thenReturn(user);
+        User userByAuthUser = userService.getUserByAuthUser(authUser);
+        assertEquals(userByAuthUser, user);
     }
 }

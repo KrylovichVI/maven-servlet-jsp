@@ -3,16 +3,16 @@ package com.krylovichVI.dao.imp;
 import com.krylovichVI.dao.BookDao;
 import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.Book;
+import com.krylovichVI.pojo.Page;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
 import java.util.List;
 
-public class DefaultBookDao implements BookDao {
+public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultBookDao.class);
     private static BookDao instance;
 
@@ -26,8 +26,8 @@ public class DefaultBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getBooksByPage() {
-        Transaction transaction = null;
+    public List<Book> getAllBooks() {
+        Transaction transaction;
         try(Session session = SessionUtil.openSession()){
             transaction = session.getTransaction();
             transaction.begin();
@@ -85,29 +85,12 @@ public class DefaultBookDao implements BookDao {
     }
 
     @Override
-    public List<Book> getBooksByPage(int countElement, int page) {
-        try(Session session = SessionUtil.openSession()){
-            Transaction transaction = session.getTransaction();
-            transaction.begin();
-            List<Book> list = session.createQuery("select b from Book b order by b.id desc")
-                    .setFirstResult(countElement * (page - 1))
-                    .setMaxResults(countElement)
-                    .getResultList();
-            transaction.commit();
-            return list;
-        }
+    public List<Book> getBooksByPage(Page page) {
+        return super.listOfPage(Book.class, page);
     }
 
     @Override
-    public int getCountOfRow() {
-        String sql = "select count(*) from books";
-        try(Session session = SessionUtil.openSession()){
-            Transaction transaction = session.getTransaction();
-            transaction.begin();
-            BigInteger count = (BigInteger)session.createNativeQuery(sql).getSingleResult();
-            transaction.commit();
-            logger.info("book {} get count of books ", count);
-            return count.intValue();
-        }
+    public long getCountOfRow() {
+        return super.countOfRow(Book.class);
     }
 }

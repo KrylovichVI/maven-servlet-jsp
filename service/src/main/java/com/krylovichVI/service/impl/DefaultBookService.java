@@ -3,12 +3,14 @@ package com.krylovichVI.service.impl;
 import com.krylovichVI.dao.BookDao;
 import com.krylovichVI.dao.imp.DefaultBookDao;
 import com.krylovichVI.pojo.Book;
+import com.krylovichVI.pojo.Page;
 import com.krylovichVI.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultBookService implements BookService {
-    private final int COUNT_ELEMENT_OF_PAGE = 5;
+    private final int MAX_ELEMENT_OF_PAGE = 5;
     private static BookService instance;
     private BookDao bookDao;
 
@@ -25,10 +27,9 @@ public class DefaultBookService implements BookService {
         }
     }
 
-
     @Override
     public List<Book> getBooks() {
-        return bookDao.getBooksByPage();
+        return bookDao.getAllBooks();
     }
 
     @Override
@@ -43,22 +44,36 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public int getCountOfPage() {
-        int countOfRow = bookDao.getCountOfRow();
-        if(countOfRow % 5 != 0){
-            return (int) Math.ceil((double) bookDao.getCountOfRow() / 5);
+    public long getCountOfPage() {
+        long countOfRow = bookDao.getCountOfRow();
+        if(countOfRow % MAX_ELEMENT_OF_PAGE != 0){
+            return (int) Math.ceil((double) bookDao.getCountOfRow() / MAX_ELEMENT_OF_PAGE);
         } else {
-            return countOfRow / 5;
+            return countOfRow / MAX_ELEMENT_OF_PAGE;
         }
     }
 
     @Override
-    public List<Book> getBooksByPage(int page) {
-        List<Book> books = bookDao.getBooksByPage(COUNT_ELEMENT_OF_PAGE, page);
+    public List<Book> getBooksByPage(int currentPage) {
+        List<Book> books = bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
         if(!books.isEmpty()){
             return books;
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Book getBookById(Long bookId) {
+        return bookDao.getBookById(bookId);
+    }
+
+    @Override
+    public List<Book> getListOfBookById(String[] bookId) {
+        List<Book> bookList = new ArrayList<>();
+        for(String str : bookId){
+            bookList.add(bookDao.getBookById(Long.valueOf(str)));
+        }
+        return bookList;
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 @WebServlet(name = "ordersAdminServlet", urlPatterns = "/adminOrders")
 public class OrdersAdminServlet extends HttpServlet {
     private OrderService orderService;
+    private final int FIRST_PAGE = 1;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -26,10 +27,21 @@ public class OrdersAdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String  currentPgs = req.getParameter("page");
+        Integer currentPage;
+        if(currentPgs == null){
+            currentPage = FIRST_PAGE;
+        } else {
+            currentPage = Integer.valueOf(currentPgs);
+        }
+
+
         Boolean idError = (Boolean) req.getSession().getAttribute("idError");
         req.getSession().removeAttribute("idError");
 
-        List<Order> usersOrders = orderService.getOrders();
+        List<Order> usersOrders = orderService.getOrderByPage(currentPage);
+        req.setAttribute("countPage", orderService.getCountOfPage());
+        req.setAttribute("currentPage", currentPage);
         req.setAttribute("usersOrders", usersOrders);
         req.setAttribute("idError", idError);
         WebUtils.forwardToJsp("adminOrders", req, resp);

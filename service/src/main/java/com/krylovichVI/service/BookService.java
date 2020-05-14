@@ -11,7 +11,11 @@ public interface BookService {
 
     void deleteBook(Long id);
 
-    int getCountOfPage();
+    long getCountOfPage();
 
     List<Book> getBooksByPage(int page);
+
+    Book getBookById(Long bookId);
+
+    List<Book> getListOfBookById(String[] bookId);
 }

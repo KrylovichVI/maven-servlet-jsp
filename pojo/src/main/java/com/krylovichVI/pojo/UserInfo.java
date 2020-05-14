@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(of = {"phone", "email"})
 public class UserInfo {
     private String phone;
     private String email;

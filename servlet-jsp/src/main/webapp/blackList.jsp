@@ -30,10 +30,8 @@
             <div class="container">
                 <div class="col ml-2">
                     <label for="userName">Username: </label>
-                    <input id="userName" class="form-control" name="userName" type="text" placeholder="User of black list">
-                </div>
-                <div class="col my-4">
-                    <button type="submit" class="btn btn-primary" >Delete</button>
+                    <input id="userName" class="form-control w-50 p-3" name="userName" type="text" placeholder="User of black list">
+                    <button type="submit" class="btn btn-primary mt-2" >Delete</button>
                 </div>
             </div>
         </div>

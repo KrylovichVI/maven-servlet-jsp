@@ -2,6 +2,7 @@ package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.BlackListDao;
 import com.krylovichVI.dao.utils.SessionUtil;
+import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.BlackList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -27,11 +28,13 @@ public class DefaultBlackListDao implements BlackListDao {
     }
 
     @Override
-    public void addUserInBlackList(BlackList blackList) {
+    public void addUserInBlackList(AuthUser authUser, BlackList blackList) {
         Transaction transaction = null;
         try(Session session = SessionUtil.openSession()){
             transaction = session.getTransaction();
             transaction.begin();
+            blackList.setAuthUser(authUser);
+            authUser.setBlackList(blackList);
             session.save(blackList);
             logger.info("black list {} add ", blackList.getDateBlock());
             transaction.commit();
@@ -57,22 +60,6 @@ public class DefaultBlackListDao implements BlackListDao {
             throw new RuntimeException(e);
         }
     }
-
-
-//    @Override
-//    public void updateBlackList(BlackList blackList) {
-//        Transaction transaction = null;
-//        try(Session session = SessionUtil.openSession()){
-//            transaction = session.getTransaction();
-//            transaction.begin();
-//            session.update(blackList);
-//            transaction.commit();
-//        } catch (HibernateException e){
-//            transaction.rollback();
-//            logger.error("black list {} error update ", blackList.getId(), e);
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     @Override
     public List<BlackList> getUsersOfBlackList() {

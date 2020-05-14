@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -36,6 +38,13 @@ public class Order {
     @ManyToOne()
     @JoinColumn(name = "order_id")
     private AuthUser authUser;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "order_book",
+            joinColumns = {@JoinColumn(name = "orderId")},
+            inverseJoinColumns = {@JoinColumn(name = "bookId")}
+    )
+    private Set<Book> bookSet = new HashSet<>();
 
     public Order(AuthUser authUser, Date dateCreate, Status status, String name) {
         this.authUser = authUser;

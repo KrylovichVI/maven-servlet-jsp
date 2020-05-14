@@ -14,6 +14,7 @@
         <th scope="col">Username</th>
         <th scope="col">Data open order</th>
         <th scope="col">Data update Status</th>
+        <th scope="col">Order books</th>
         <th scope="col">Status order</th>
         <th scope="col">Action</th>
     </tr>
@@ -26,6 +27,12 @@
             <td><c:out value="${user.authUser.username}" default="defaultValue" escapeXml="true"/></td>
             <td><c:out value="${user.dateCreate}" default="defaultValue" escapeXml="true"/></td>
             <td><c:out value="${user.dateUpdate}" default="-" escapeXml="true"/></td>
+            <td>
+                <c:forEach items="${user.bookSet}" var="book">
+                    <c:out value="${book.bookName}" default="defaultValue" escapeXml="true"/>
+                    <br>
+                </c:forEach>
+            </td>
             <td><c:out value="${user.status}" default="defaultValue" escapeXml="true"/></td>
             <td>
                 <form action="${pageContext.request.contextPath}/deleteOrderServlet" method="post" >
@@ -36,6 +43,50 @@
     </c:forEach>
     </tbody>
 </table>
+<div class="container mb-4">
+    <nav aria-label="...">
+        <ul class="pagination pagination-sm">
+            <c:choose>
+                <c:when test="${currentPage <= 1}">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="${pageContext.request.contextPath}/adminOrders?page=${currentPage - 1}">Previous</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <c:forEach begin="1" end="${countPage}" var="pgs">
+                <c:choose>
+                    <c:when test="${currentPage != null && currentPage == pgs}">
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">${pgs}<span class="sr-only">(current)</span></span>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item">
+                            <a  href="${pageContext.request.contextPath}/adminOrders?page=${pgs}" class="page-link">${pgs}</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${currentPage >= countPage}">
+                    <li class="page-item disabled">
+                        <span class="page-link" >Next</span>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a href="${pageContext.request.contextPath}/adminOrders?page=${currentPage + 1}" class="page-link">Next</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </nav>
+</div>
     <form action="${pageContext.request.contextPath}/adminOrders" method="post">
         <div class="form-group ml-4">
             <h3>Update Status Order</h3>

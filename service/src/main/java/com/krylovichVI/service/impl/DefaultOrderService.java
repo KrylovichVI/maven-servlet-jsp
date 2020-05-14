@@ -2,9 +2,8 @@ package com.krylovichVI.service.impl;
 
 import com.krylovichVI.dao.OrderDao;
 import com.krylovichVI.dao.imp.DefaultOrderDao;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.Order;
-import com.krylovichVI.pojo.Status;
+import com.krylovichVI.pojo.*;
+import com.krylovichVI.service.BookService;
 import com.krylovichVI.service.OrderService;
 
 import java.sql.Date;
@@ -15,30 +14,28 @@ import java.util.List;
 public class DefaultOrderService implements OrderService {
     private static OrderService instance;
     private OrderDao orderDao;
+    private BookService bookService;
+    private final int MAX_ELEMENT_OF_PAGE = 5;
 
 
     private DefaultOrderService() {
         orderDao = DefaultOrderDao.getInstance();
+        bookService = DefaultBookService.getInstance();
     }
 
-    public static OrderService getInstance(){
-        if(instance == null){
+    public static OrderService getInstance() {
+        if (instance == null) {
             instance = new DefaultOrderService();
         }
         return instance;
     }
 
     @Override
-    public List<Order> getOrders() {
-        return orderDao.getOrders();
-    }
-
-    @Override
     public List<Order> getOrdersOfUser(AuthUser authUser) {
         List<Order> orders = orderDao.getOrders();
         List<Order> result = new ArrayList<>();
-        for(Order order : orders){
-            if(order.getAuthUser().equals(authUser)){
+        for (Order order : orders) {
+            if (order.getAuthUser().equals(authUser)) {
                 result.add(order);
             }
         }
@@ -46,14 +43,14 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public long addOrder(String orderName, AuthUser authUser) {
-        if(authUser != null) {
-            if(orderName.isEmpty()){
+    public long addOrder(String orderName, AuthUser authUser, List<Book> book) {
+        if (authUser != null) {
+            if (orderName.isEmpty()) {
                 orderName = "Default order";
             }
             Order order = new Order(authUser, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, orderName);
-            return orderDao.addOrder(authUser,order);
-        }else {
+            return orderDao.addOrder(authUser, order, book);
+        } else {
             return -1;
         }
     }
@@ -67,12 +64,12 @@ public class DefaultOrderService implements OrderService {
     @Override
     public Long updateStatusOrder(Long id, String status) {
         Order orderById = getOrderById(id);
-        if(orderById != null) {
+        if (orderById != null) {
             orderById.setStatus(Status.valueOf(status));
             orderById.setDateUpdate(Date.valueOf(LocalDate.now()));
             orderDao.updateStatusOrder(orderById);
             return orderById.getId();
-        }else{
+        } else {
             return -1L;
         }
     }
@@ -81,4 +78,36 @@ public class DefaultOrderService implements OrderService {
     public Order getOrderById(Long id) {
         return orderDao.getOrderById(id);
     }
+
+    @Override
+    public List<Book> getBookByOrder() {
+        List<Book> bookByOrder = orderDao.getBookByOrder();
+        List<Book> allBooks = bookService.getBooks();
+
+        if(!bookByOrder.isEmpty()) {
+            allBooks.removeAll(bookByOrder);
+        }
+        return allBooks;
+    }
+
+    @Override
+    public List<Order> getOrderByPage(int currentPage) {
+        List<Order> orders = orderDao.getListOrderByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
+        if(!orders.isEmpty()){
+            return orders;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public long getCountOfPage() {
+        long countOfRow = orderDao.getCountOfRow();
+        if(countOfRow % MAX_ELEMENT_OF_PAGE != 0){
+            return (int) Math.ceil((double) orderDao.getCountOfRow() / MAX_ELEMENT_OF_PAGE);
+        } else {
+            return countOfRow / MAX_ELEMENT_OF_PAGE;
+        }
+    }
+
 }

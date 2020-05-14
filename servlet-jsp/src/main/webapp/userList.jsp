@@ -30,7 +30,7 @@
                 <label for="usrName">Username: </label>
                 <input id="usrName" class="form-control" name="usrName" type="text" placeholder="User of black list">
             </div>
-            <div class="col my-4">
+            <div class="col ml-2 my-4">
                 <button type="submit" class="btn btn-primary" >Add in black list</button>
             </div>
         </div>

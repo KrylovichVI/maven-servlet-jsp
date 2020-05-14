@@ -3,6 +3,7 @@ package com.krylovichVI.dao.imp;
 import com.krylovichVI.dao.AuthUserDao;
 import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.pojo.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -37,11 +38,13 @@ public class DefaultAuthUserDao implements AuthUserDao {
     }
 
     @Override
-    public long saveAuthUser(AuthUser authUser) {
+    public long saveAuthUser(AuthUser authUser, User userEmpty) {
         Transaction transaction = null;
         try(Session session = SessionUtil.openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
+            authUser.setUser(userEmpty);
+            userEmpty.setAuthUser(authUser);
             Long id = (Long) session.save(authUser);
             transaction.commit();
             logger.info("auth_user {} save user", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
