@@ -15,7 +15,6 @@ import java.util.List;
 @ToString(exclude = {"id"})
 @Entity
 @Table(name = "books")
-@Cacheable
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

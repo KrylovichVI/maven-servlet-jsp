@@ -1,10 +1,13 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.dao.imp.DefaultAuthUserDao;
-import com.krylovichVI.dao.imp.DefaultBlackListDao;
+import com.krylovichVI.dao.config.DaoConfig;
 import com.krylovichVI.pojo.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -12,16 +15,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoConfig.class})
+@Transactional
 public class DefaultBlackListDaoTest {
+    @Autowired
     private BlackListDao blackListDao;
+    @Autowired
     private AuthUserDao authUserDao;
-
-    @BeforeEach
-    void init(){
-        blackListDao = DefaultBlackListDao.getInstance();
-        authUserDao = DefaultAuthUserDao.getInstance();
-    }
 
     @Test
     void testByAddUserOfBlackList(){

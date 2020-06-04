@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <defaultCache maxEntriesLocalHeap="20"
+                  eternal="false"
+                  timeToIdleSeconds="120"
+                  timeToLiveSeconds="200"
+                  memoryStoreEvictionPolicy="LRU"/>
+    <cache name="com.krylovichVI.pojo.AuthUser"
+           maxEntriesLocalHeap="20"
+            eternal="true">
+    </cache>
+    <cache name="com.krylovichVI.pojo.BlackList"
+           maxEntriesLocalHeap="20"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="com.krylovichVI.pojo.User"
+           maxEntriesLocalHeap="20"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="com.krylovichVI.pojo.Book"
+           maxEntriesLocalHeap="20"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="com.krylovichVI.pojo.Order"
+           maxEntriesLocalHeap="20"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+<!--    <cache name="org.hibernate.cache.StandardQueryCache"-->
+<!--           maxEntriesLocalHeap="100"-->
+<!--            eternal="false"-->
+<!--            timeToLiveSeconds="120">-->
+<!--        <persistence strategy="localTempSwap"/>-->
+<!--    </cache>-->
+</ehcache>

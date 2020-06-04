@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Cacheable
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

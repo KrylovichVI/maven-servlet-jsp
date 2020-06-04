@@ -1,101 +1,83 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.AuthUserDao;
-import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
-import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class DefaultAuthUserDao implements AuthUserDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultAuthUserDao.class);
-    private static AuthUserDao instance;
+    private final SessionFactory factory;
 
-    private DefaultAuthUserDao() {}
-
-    public static AuthUserDao getInstance(){
-        if(instance == null){
-            instance = new DefaultAuthUserDao();
-        }
-        return instance;
+    public DefaultAuthUserDao(SessionFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     public AuthUser getByLogin(String login) {
-        try(Session session = SessionUtil.openSession()){
-            session.getTransaction().begin();
-            AuthUser authUser = (AuthUser)session.createQuery("select a from AuthUser a where a.username = :username")
+        try {
+            AuthUser authUser = (AuthUser) factory.getCurrentSession()
+                    .createQuery("select a from AuthUser a where a.username = :username")
                     .setParameter("username", login)
                     .getSingleResult();
-            session.getTransaction().commit();
             return authUser;
+        } catch(NoResultException e) {
+            logger.error("auth_user not found by login: ", login);
+            return null;
         }
     }
 
     @Override
     public long saveAuthUser(AuthUser authUser, User userEmpty) {
-        Transaction transaction = null;
-        try(Session session = SessionUtil.openSession()) {
-            transaction = session.getTransaction();
-            transaction.begin();
+        try {
+            Session session = factory.getCurrentSession();
             authUser.setUser(userEmpty);
             userEmpty.setAuthUser(authUser);
             Long id = (Long) session.save(authUser);
-            transaction.commit();
-            logger.info("auth_user {} save user", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
+            logger.info("auth_user save: ", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
             return id;
-        } catch (HibernateException e) {
-            transaction.rollback();
-            logger.error("auth_user {} error by save Auth_User ", authUser.getUsername(), e);
+        } catch(NonUniqueObjectException e){
+            logger.error("auth_user error by save ", authUser.getUsername());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<AuthUser> getUsers() {
-        Transaction transaction;
-        try(Session session = SessionUtil.openSession()) {
-            transaction = session.getTransaction();
-            transaction.begin();
-            List<AuthUser> listOfAuthUser = session.createQuery("select a from AuthUser a").getResultList();
-            transaction.commit();
-            return listOfAuthUser;
-        }
+        List<AuthUser> listOfAuthUser = factory.getCurrentSession()
+                .createQuery("select a from AuthUser a").getResultList();
+        return listOfAuthUser;
     }
 
     @Override
     public AuthUser getById(Long id) {
-        Transaction transaction = null;
-        try(Session session = SessionUtil.openSession()){
-            transaction = session.getTransaction();
-            transaction.begin();
-            AuthUser authUser = session.get(AuthUser.class, id);
-            transaction.commit();
+        try {
+            AuthUser authUser = factory.getCurrentSession().get(AuthUser.class, id);
+            logger.info("auth_user save: ", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
             return authUser;
-        } catch (HibernateException e) {
-            transaction.rollback();
-            logger.error("auth_user {} error by Id ", id, e);
-            throw new RuntimeException(e);
+        } catch(NoResultException e){
+            logger.error("auth_user is not consist: ", id);
+            throw  new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteAuthUser(AuthUser authUser) {
-        Transaction transaction = null;
-        try(Session session = SessionUtil.openSession()){
-            transaction = session.getTransaction();
-            transaction.begin();
-            session.delete(authUser);
-            transaction.commit();
-        } catch (HibernateException e){
-            transaction.rollback();
-            logger.error("auth_user {} error by delete ", e);
-            throw new RuntimeException(e);
+        try {
+            AuthUser userFromDb = getByLogin(authUser.getUsername());
+            Session session = factory.getCurrentSession();
+            session.delete(userFromDb);
+            session.flush();
+            logger.info("auth_user {} delete user", userFromDb.getUsername(), userFromDb.getPassword(), userFromDb.getRole().name());
+        } catch (NoResultException e){
+            logger.error("auth_user is delete user: ", authUser.getUsername());
         }
     }
 }

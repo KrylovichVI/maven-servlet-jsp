@@ -1,22 +1,24 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.dao.imp.DefaultBookDao;
+import com.krylovichVI.dao.config.DaoConfig;
 import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Page;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoConfig.class})
+@Transactional
 public class DefaultBookDaoTest {
+    @Autowired
     private BookDao bookDao;
-
-    @BeforeEach
-    void init(){
-        bookDao = DefaultBookDao.getInstance();
-    }
 
     @Test
     void testAddBook(){

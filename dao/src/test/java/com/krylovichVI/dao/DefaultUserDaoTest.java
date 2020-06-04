@@ -1,25 +1,28 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.dao.imp.DefaultAuthUserDao;
-import com.krylovichVI.dao.imp.DefaultUserDao;
+import com.krylovichVI.dao.config.DaoConfig;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.User;
 import com.krylovichVI.pojo.UserInfo;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoConfig.class})
+@Transactional
 public class DefaultUserDaoTest {
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private AuthUserDao authUser;
-
-    @BeforeEach
-    void init(){
-        userDao = DefaultUserDao.getInstance();
-        authUser = DefaultAuthUserDao.getInstance();
-    }
 
     @Test
     void testOfAddUserInfo(){

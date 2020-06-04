@@ -1,12 +1,11 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.BlackListDao;
-import com.krylovichVI.dao.utils.SessionUtil;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.BlackList;
-import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,64 +13,38 @@ import java.util.List;
 
 public class DefaultBlackListDao implements BlackListDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultBlackListDao.class);
-    private static BlackListDao instance;
+    private final SessionFactory factory;
 
-    private DefaultBlackListDao(){
-
-    }
-
-    public static BlackListDao getInstance(){
-        if(instance == null){
-            instance = new DefaultBlackListDao();
-        }
-        return instance;
+    public DefaultBlackListDao(SessionFactory factory){
+        this.factory = factory;
     }
 
     @Override
     public void addUserInBlackList(AuthUser authUser, BlackList blackList) {
-        Transaction transaction = null;
-        try(Session session = SessionUtil.openSession()){
-            transaction = session.getTransaction();
-            transaction.begin();
+        try {
             blackList.setAuthUser(authUser);
             authUser.setBlackList(blackList);
-            session.save(blackList);
+            factory.getCurrentSession().save(blackList);
             logger.info("black list {} add ", blackList.getDateBlock());
-            transaction.commit();
-        } catch (HibernateException e) {
-            transaction.rollback();
-            logger.error("black list {} error add ", blackList.getDateBlock(), e);
+        } catch(NonUniqueObjectException e){
+            logger.error("black list {} error add ", authUser.getUsername());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteUserOfBlackList(BlackList blackList) {
-        Transaction transaction = null;
-        try(Session session = SessionUtil.openSession()){
-            transaction = session.getTransaction();
-            transaction.begin();
-            session.remove(blackList);
-            transaction.commit();
-            logger.info("black list {} delete ", blackList.getId());
-        } catch (HibernateException e) {
-            transaction.rollback();
-            logger.error("black list {} error delete ", blackList.getId(), e);
-            throw new RuntimeException(e);
-        }
+        Session session = factory.getCurrentSession();
+        session.delete(blackList);
+        session.flush();
+        logger.info("black list {} delete ", blackList.getId());
     }
 
     @Override
     public List<BlackList> getUsersOfBlackList() {
         String sql = "select b from BlackList b";
-        Transaction transaction;
-        try(Session session = SessionUtil.openSession()){
-            transaction = session.getTransaction();
-            transaction.begin();
-            List<BlackList> resultList = session.createQuery(sql).getResultList();
-            transaction.commit();
-            return resultList;
-        }
+        List<BlackList> resultList = factory.getCurrentSession().createQuery(sql).getResultList();
+        return resultList;
     }
 }
 
