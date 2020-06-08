@@ -1,10 +1,9 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.dao.config.DaoConfig;
-import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.Role;
-import com.krylovichVI.pojo.User;
-import com.krylovichVI.pojo.UserInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,48 +26,48 @@ public class DefaultAuthUserDaoTest {
 
     @Test
     void testBySaveAuthUser(){
-        AuthUser authUser = new AuthUser("myTest", "123456", Role.USER, null);
-        User userEmpty = new User("", "", new UserInfo("", ""), null);
+        AuthUserEntity authUser = new AuthUserEntity("myTest", "123456", Role.USER, null);
+        UserEntity userEmpty = new UserEntity( "", "", "", "", null);
         long id = authUserDao.saveAuthUser(authUser, userEmpty);
-        AuthUser userDaoById = authUserDao.getById(id);
+        AuthUserEntity userDaoById = authUserDao.getById(id);
         assertEquals(authUser.getUsername(),  userDaoById.getUsername());
         authUserDao.deleteAuthUser(userDaoById);
     }
 
     @Test
     void testByLogin(){
-        AuthUser authUser = new AuthUser("myTestUser", "123456", Role.USER, null);
-        User userEmpty = new User("", "", new UserInfo("", ""), null);
+        AuthUserEntity authUser = new AuthUserEntity("myTestUser", "123456", Role.USER, null);
+        UserEntity userEmpty = new UserEntity("", "", "", "", null);
         authUserDao.saveAuthUser(authUser, userEmpty);
-        AuthUser myTestUser = authUserDao.getByLogin(authUser.getUsername());
+        AuthUserEntity myTestUser = authUserDao.getByLogin(authUser.getUsername());
         assertNotNull(myTestUser);
         authUserDao.deleteAuthUser(myTestUser);
     }
 
     @Test
     void testById(){
-        AuthUser authUser = new AuthUser("myTestUser", "123456", Role.USER, null);
-        User userEmpty = new User("", "", new UserInfo("", ""), null);
+        AuthUserEntity authUser = new AuthUserEntity("myTestUser", "123456", Role.USER, null);
+        UserEntity userEmpty = new UserEntity("", "", "", "", null);
         authUserDao.saveAuthUser(authUser, userEmpty);
-        AuthUser userDaoById = authUserDao.getById(authUser.getId());
+        AuthUserEntity userDaoById = authUserDao.getById(authUser.getId());
         assertEquals(authUser, userDaoById);
         authUserDao.deleteAuthUser(userDaoById);
     }
 
     @Test
     void  testByListUser(){
-        AuthUser authUserFirst = new AuthUser("myTestFirstUser", "myTestFirstUser", Role.USER, null);
-        AuthUser authUserSecond = new AuthUser("myTestSecondUser", "myTestSecondUser", Role.USER, null);
-        AuthUser authUserThread = new AuthUser("myTestThreadUser", "myTestThreadUser", Role.USER, null);
-        User userEmpty1 = new User("", "", new UserInfo("", ""), null);
-        User userEmpty2 = new User("", "", new UserInfo("", ""), null);
-        User userEmpty3 = new User("", "", new UserInfo("", ""), null);
+        AuthUserEntity authUserFirst = new AuthUserEntity("myTestFirstUser", "myTestFirstUser", Role.USER, null);
+        AuthUserEntity authUserSecond = new AuthUserEntity("myTestSecondUser", "myTestSecondUser", Role.USER, null);
+        AuthUserEntity authUserThread = new AuthUserEntity("myTestThreadUser", "myTestThreadUser", Role.USER, null);
+        UserEntity userEmpty1 = new UserEntity( "", "", "", "", null);
+        UserEntity userEmpty2 = new UserEntity( "", "", "", "", null);
+        UserEntity userEmpty3 = new UserEntity( "", "", "", "", null);
 
         authUserDao.saveAuthUser(authUserFirst, userEmpty1);
         authUserDao.saveAuthUser(authUserSecond, userEmpty2);
         authUserDao.saveAuthUser(authUserThread, userEmpty3);
 
-        List<AuthUser> users = authUserDao.getUsers();
+        List<AuthUserEntity> users = authUserDao.getUsers();
 
         assertEquals(users.size(), 3);
 

@@ -1,8 +1,8 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.AuthUserDao;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.User;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,10 +21,10 @@ public class DefaultAuthUserDao implements AuthUserDao {
     }
 
     @Override
-    public AuthUser getByLogin(String login) {
+    public AuthUserEntity getByLogin(String login) {
         try {
-            AuthUser authUser = (AuthUser) factory.getCurrentSession()
-                    .createQuery("select a from AuthUser a where a.username = :username")
+            AuthUserEntity authUser = (AuthUserEntity) factory.getCurrentSession()
+                    .createQuery("select a from AuthUserEntity a where a.username = :username")
                     .setParameter("username", login)
                     .getSingleResult();
             return authUser;
@@ -35,7 +35,7 @@ public class DefaultAuthUserDao implements AuthUserDao {
     }
 
     @Override
-    public long saveAuthUser(AuthUser authUser, User userEmpty) {
+    public long saveAuthUser(AuthUserEntity authUser, UserEntity userEmpty) {
         try {
             Session session = factory.getCurrentSession();
             authUser.setUser(userEmpty);
@@ -50,16 +50,16 @@ public class DefaultAuthUserDao implements AuthUserDao {
     }
 
     @Override
-    public List<AuthUser> getUsers() {
-        List<AuthUser> listOfAuthUser = factory.getCurrentSession()
-                .createQuery("select a from AuthUser a").getResultList();
+    public List<AuthUserEntity> getUsers() {
+        List<AuthUserEntity> listOfAuthUser = factory.getCurrentSession()
+                .createQuery("select a from AuthUserEntity a").getResultList();
         return listOfAuthUser;
     }
 
     @Override
-    public AuthUser getById(Long id) {
+    public AuthUserEntity getById(Long id) {
         try {
-            AuthUser authUser = factory.getCurrentSession().get(AuthUser.class, id);
+            AuthUserEntity authUser = factory.getCurrentSession().get(AuthUserEntity.class, id);
             logger.info("auth_user save: ", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
             return authUser;
         } catch(NoResultException e){
@@ -69,9 +69,9 @@ public class DefaultAuthUserDao implements AuthUserDao {
     }
 
     @Override
-    public void deleteAuthUser(AuthUser authUser) {
+    public void deleteAuthUser(AuthUserEntity authUser) {
         try {
-            AuthUser userFromDb = getByLogin(authUser.getUsername());
+            AuthUserEntity userFromDb = getByLogin(authUser.getUsername());
             Session session = factory.getCurrentSession();
             session.delete(userFromDb);
             session.flush();

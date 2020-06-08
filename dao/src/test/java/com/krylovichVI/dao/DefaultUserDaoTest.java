@@ -1,10 +1,9 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.dao.config.DaoConfig;
-import com.krylovichVI.pojo.AuthUser;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.Role;
-import com.krylovichVI.pojo.User;
-import com.krylovichVI.pojo.UserInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,10 @@ public class DefaultUserDaoTest {
 
     @Test
     void testOfAddUserInfo(){
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), admin);
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity( "Misha", "Kernasovskiy", "12345667", "test@gmail.com", admin);
         authUser.saveAuthUser(admin, user);
-        User userByAuthId = userDao.getUserByAuthUser(admin);
+        UserEntity userByAuthId = userDao.getUserByAuthUser(admin);
 
         assertEquals(userByAuthId, user);
 
@@ -38,24 +37,24 @@ public class DefaultUserDaoTest {
 
     @Test
     void testUpdateUserInfo(){
-        AuthUser admin = new AuthUser("A", "A", Role.ADMIN, null);
-        User user = new User("M", "K", new UserInfo("1", "test@gmail.com"), null);
+        AuthUserEntity admin = new AuthUserEntity("A", "A", Role.ADMIN, null);
+        UserEntity user = new UserEntity("M", "K", "1", "test@gmail.com", null);
         long idAdmin = authUser.saveAuthUser(admin, user);
         userDao.updateUserInfo(user, idAdmin);
 
-        User userByAuthId = userDao.getUserByAuthUser(admin);
+        UserEntity userByAuthId = userDao.getUserByAuthUser(admin);
 
-        assertEquals(userByAuthId.getUserInfo().getEmail(), user.getUserInfo().getEmail());
+        assertEquals(userByAuthId.getEmail(), user.getEmail());
         assertEquals(userByAuthId.getFirstName(), user.getFirstName());
         assertEquals(userByAuthId.getLastName(), user.getLastName());
-        assertEquals(userByAuthId.getUserInfo().getPhone(), user.getUserInfo().getPhone());
+        assertEquals(userByAuthId.getPhone(), user.getPhone());
 
         authUser.deleteAuthUser(admin);
     }
 
     @Test
     void testOfAddUser(){
-        User user = new User("M", "K", new UserInfo("1", "test@gmail.com"), null);
+        UserEntity user = new UserEntity( "M", "K", "1", "test@gmail.com", null);
         long id = -1;
         id = userDao.addUserInfo(user);
         assertNotEquals(id, -1);

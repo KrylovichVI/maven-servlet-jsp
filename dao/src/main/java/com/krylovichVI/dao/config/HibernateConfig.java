@@ -39,7 +39,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactoryBean(){
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(dataSource());
-        localSessionFactoryBean.setPackagesToScan("com.krylovichVI.pojo");
+        localSessionFactoryBean.setPackagesToScan("com.krylovichVI.dao.entity");
         localSessionFactoryBean.setHibernateProperties(settingsConfig.hibernateProperties());
 
         return localSessionFactoryBean;

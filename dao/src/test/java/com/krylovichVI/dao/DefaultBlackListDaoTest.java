@@ -1,6 +1,9 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.dao.config.DaoConfig;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BlackListEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,9 +29,9 @@ public class DefaultBlackListDaoTest {
 
     @Test
     void testByAddUserOfBlackList(){
-        AuthUser authUser = new AuthUser("user", "user", Role.USER, null);
-        User user = new User("", "", new UserInfo("", ""), null);
-        BlackList blackList = new BlackList(Date.valueOf(LocalDate.now()), null);
+        AuthUserEntity authUser = new AuthUserEntity("user", "user", Role.USER, null);
+        UserEntity user = new UserEntity("", "", "", "", null);
+        BlackListEntity blackList = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
 
         authUserDao.saveAuthUser(authUser, user);
         blackListDao.addUserInBlackList(authUser, blackList);
@@ -40,9 +43,9 @@ public class DefaultBlackListDaoTest {
 
     @Test
     void testByDeleteUserOfBlackList(){
-        AuthUser authUser = new AuthUser("user", "user", Role.USER, null);
-        User user = new User("", "", new UserInfo("", ""), null);
-        BlackList blackList = new BlackList(Date.valueOf(LocalDate.now()), null);
+        AuthUserEntity authUser = new AuthUserEntity("user", "user", Role.USER, null);
+        UserEntity user = new UserEntity( "", "", "", "", null);
+        BlackListEntity blackList = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
 
         authUserDao.saveAuthUser(authUser, user);
         blackListDao.addUserInBlackList(authUser, blackList);
@@ -51,9 +54,9 @@ public class DefaultBlackListDaoTest {
         assertFalse(existUserOfBlackList(authUser));
     }
 
-    private boolean existUserOfBlackList(AuthUser authUser) {
-        List<BlackList> usersOfBlackList = blackListDao.getUsersOfBlackList();
-        for(BlackList list : usersOfBlackList){
+    private boolean existUserOfBlackList(AuthUserEntity authUser) {
+        List<BlackListEntity> usersOfBlackList = blackListDao.getUsersOfBlackList();
+        for(BlackListEntity list : usersOfBlackList){
             if(list.getAuthUser().equals(authUser)){
                 return true;
             }
@@ -63,9 +66,9 @@ public class DefaultBlackListDaoTest {
 
     @Test
     void testOfExistOfBlackList(){
-        AuthUser authUser = new AuthUser("user", "user", Role.USER, null);
-        User user = new User("", "", new UserInfo("", ""), null);
-        BlackList blackList = new BlackList(Date.valueOf(LocalDate.now()), null);
+        AuthUserEntity authUser = new AuthUserEntity("user", "user", Role.USER, null);
+        UserEntity user = new UserEntity( "", "", "", "", null);
+        BlackListEntity blackList = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
 
         authUserDao.saveAuthUser(authUser, user);
         blackListDao.addUserInBlackList(authUser, blackList);
@@ -76,27 +79,27 @@ public class DefaultBlackListDaoTest {
 
     @Test
     void testOfNullBlackList(){
-        List<BlackList> usersOfBlackList = blackListDao.getUsersOfBlackList();
+        List<BlackListEntity> usersOfBlackList = blackListDao.getUsersOfBlackList();
         assertNotNull(usersOfBlackList);
     }
 
     @Test
     void testOfUserInBlackList(){
-        AuthUser authUserFirst = new AuthUser("user", "user", Role.USER, null);
-        User userFirst = new User("", "", new UserInfo("", ""), null);
-        BlackList blackListFirst = new BlackList(Date.valueOf(LocalDate.now()), null);
+        AuthUserEntity authUserFirst = new AuthUserEntity("user", "user", Role.USER, null);
+        UserEntity userFirst = new UserEntity( "", "", "", "", null);
+        BlackListEntity blackListFirst = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
 
         authUserDao.saveAuthUser(authUserFirst, userFirst);
         blackListDao.addUserInBlackList(authUserFirst, blackListFirst);
 
-        AuthUser authUserSecond = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User userSecond = new User("", "", new UserInfo("", ""), null);
-        BlackList blackListSecond = new BlackList(Date.valueOf(LocalDate.now()), null);
+        AuthUserEntity authUserSecond = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity userSecond = new UserEntity( "", "", "", "", null);
+        BlackListEntity blackListSecond = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
 
         authUserDao.saveAuthUser(authUserSecond, userSecond);
         blackListDao.addUserInBlackList(authUserSecond, blackListSecond);
 
-        List<BlackList> usersOfBlackList = blackListDao.getUsersOfBlackList();
+        List<BlackListEntity> usersOfBlackList = blackListDao.getUsersOfBlackList();
 
         assertEquals(usersOfBlackList.size(), 2);
 

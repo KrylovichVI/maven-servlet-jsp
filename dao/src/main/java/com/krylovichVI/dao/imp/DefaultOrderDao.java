@@ -1,9 +1,9 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.OrderDao;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.Book;
-import com.krylovichVI.pojo.Order;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BookEntity;
+import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.pojo.Page;
 import org.hibernate.LockMode;
 import org.hibernate.NonUniqueObjectException;
@@ -13,10 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
+public class DefaultOrderDao extends DefaultPageDao<OrderEntity> implements OrderDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultOrderDao.class);
     private final SessionFactory sessionFactory;
 
@@ -25,21 +24,21 @@ public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     }
 
     @Override
-    public List<Order> getOrders() {
-        List<Order> listOrder = (ArrayList<Order>)sessionFactory.getCurrentSession()
-                .createQuery("select o from Order o").getResultList();
+    public List<OrderEntity> getOrders() {
+        List<OrderEntity> listOrder = sessionFactory.getCurrentSession()
+                .createQuery("select o from OrderEntity o").getResultList();
         return listOrder;
     }
 
     @Override
-    public long addOrder(AuthUser authUser, Order order, List<Book> book) {
+    public long addOrder(AuthUserEntity authUser, OrderEntity order, List<BookEntity> book) {
         try{
             Session session = sessionFactory.getCurrentSession();
             session.lock(authUser, LockMode.UPGRADE_NOWAIT);
             authUser.getOrderList().add(order);
             order.getBookSet().addAll(book);
             long id = (Long) session.save(order);
-            for(Book myBook : book){
+            for(BookEntity myBook : book){
                 session.lock(myBook, LockMode.UPGRADE_NOWAIT);
                 myBook.getOrderList().add(order);
             }
@@ -52,7 +51,7 @@ public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     }
 
     @Override
-    public void deleteOrder(Order order) {
+    public void deleteOrder(OrderEntity order) {
         Session session = sessionFactory.getCurrentSession();
         session.remove(order);
         session.flush();
@@ -60,7 +59,7 @@ public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     }
 
     @Override
-    public void updateStatusOrder(Order order) {
+    public void updateStatusOrder(OrderEntity order) {
         try{
             sessionFactory.getCurrentSession().update(order);
             logger.info("order {} update ", order.getId(), order.getStatus());
@@ -71,9 +70,9 @@ public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     }
 
     @Override
-    public Order getOrderById(Long id) {
+    public OrderEntity getOrderById(Long id) {
         try{
-            Order order = sessionFactory.getCurrentSession().get(Order.class, id);
+            OrderEntity order = sessionFactory.getCurrentSession().get(OrderEntity.class, id);
             logger.info("order {} get order by ", id);
             return order;
         } catch (NoResultException e){
@@ -83,21 +82,21 @@ public class DefaultOrderDao extends DefaultPageDao<Order> implements OrderDao {
     }
 
     @Override
-    public List<Book> getBookByOrder() {
+    public List<BookEntity> getBookByOrder() {
         String sql = "Select b.id as id, b.name as name, b.author as author  from books as b " +
                 "inner join order_book as ob on  b.id = ob.bookId " +
                 "inner join orders as o on o.id = ob.orderId where o.status ='IN_PROCESSING'";
-        List<Book> resultList = sessionFactory.getCurrentSession().createNativeQuery(sql, Book.class).getResultList();
+        List<BookEntity> resultList = sessionFactory.getCurrentSession().createNativeQuery(sql, BookEntity.class).getResultList();
         return resultList;
     }
 
     @Override
-    public List<Order> getListOrderByPage(Page page) {
-        return super.listOfPage(Order.class, sessionFactory, page);
+    public List<OrderEntity> getListOrderByPage(Page page) {
+        return super.listOfPage(OrderEntity.class, sessionFactory, page);
     }
 
     @Override
     public long getCountOfRow() {
-        return super.countOfRow(Order.class, sessionFactory);
+        return super.countOfRow(OrderEntity.class, sessionFactory);
     }
 }

@@ -1,18 +1,18 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.User;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 
 import java.util.List;
 
 public interface AuthUserDao {
-    AuthUser getByLogin(String username);
+    AuthUserEntity getByLogin(String username);
 
-    long saveAuthUser(AuthUser authUser, User userEmpty);
+    long saveAuthUser(AuthUserEntity authUser, UserEntity userEmpty);
 
-    List<AuthUser> getUsers();
+    List<AuthUserEntity> getUsers();
 
-    AuthUser getById(Long id);
+    AuthUserEntity getById(Long id);
 
-    void deleteAuthUser(AuthUser authUser);
+    void deleteAuthUser(AuthUserEntity authUser);
 }

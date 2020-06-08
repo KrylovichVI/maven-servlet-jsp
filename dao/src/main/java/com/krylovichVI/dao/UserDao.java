@@ -1,14 +1,14 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.User;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 
 public interface UserDao {
-    long addUserInfo(User user);
+    long addUserInfo(UserEntity user);
 
-    void updateUserInfo(User user, Long id);
+    void updateUserInfo(UserEntity user, Long id);
 
-    User getUserByAuthUser(AuthUser authUser);
+    UserEntity getUserByAuthUser(AuthUserEntity authUser);
 
-    void deleteUserInfo(User user);
+    void deleteUserInfo(UserEntity user);
 }

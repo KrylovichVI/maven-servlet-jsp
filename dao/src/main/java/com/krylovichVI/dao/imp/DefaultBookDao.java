@@ -1,7 +1,7 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.BookDao;
-import com.krylovichVI.pojo.Book;
+import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Page;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
+public class DefaultBookDao extends DefaultPageDao<BookEntity> implements BookDao {
     private static final Logger logger = LoggerFactory.getLogger(DefaultBookDao.class);
 
     private final SessionFactory factory;
@@ -21,14 +21,14 @@ public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
     }
 
     @Override
-    public List<Book> getAllBooks() {
-        List<Book> listOfBooks = factory.getCurrentSession().createQuery("select b from Book b order by b.id desc")
+    public List<BookEntity> getAllBooks() {
+        List<BookEntity> listOfBooks = factory.getCurrentSession().createQuery("select b from BookEntity b order by b.id desc")
                 .getResultList();
         return listOfBooks;
     }
 
     @Override
-    public long addBook(Book book) {
+    public long addBook(BookEntity book) {
         try{
             Long id = (Long) factory.getCurrentSession().save(book);
             logger.info("book {} add ", book.getAuthor(), book.getBookName());
@@ -40,7 +40,7 @@ public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
     }
 
     @Override
-    public void deleteBook(Book book) {
+    public void deleteBook(BookEntity book) {
         Session session = factory.getCurrentSession();
         session.delete(book);
         session.flush();
@@ -48,9 +48,9 @@ public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
     }
 
     @Override
-    public Book getBookById(Long id) {
+    public BookEntity getBookById(Long id) {
         try{
-            Book book = factory.getCurrentSession().get(Book.class, id);
+            BookEntity book = factory.getCurrentSession().get(BookEntity.class, id);
             logger.info("book {} get book by id ", book.getAuthor(), book.getBookName());
             return book;
         } catch(NoResultException e){
@@ -60,12 +60,12 @@ public class DefaultBookDao extends DefaultPageDao<Book> implements BookDao {
     }
 
     @Override
-    public List<Book> getBooksByPage(Page page) {
-        return super.listOfPage(Book.class, factory, page);
+    public List<BookEntity> getBooksByPage(Page page) {
+        return super.listOfPage(BookEntity.class, factory, page);
     }
 
     @Override
     public long getCountOfRow() {
-        return super.countOfRow(Book.class, factory);
+        return super.countOfRow(BookEntity.class, factory);
     }
 }

@@ -1,20 +1,20 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.pojo.Book;
+import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Page;
 
 import java.util.List;
 
 public interface BookDao {
-    List<Book> getAllBooks();
+    List<BookEntity> getAllBooks();
 
-    long addBook(Book book);
+    long addBook(BookEntity book);
 
-    void deleteBook(Book book);
+    void deleteBook(BookEntity book);
 
-    Book getBookById(Long id);
+    BookEntity getBookById(Long id);
 
-    List<Book> getBooksByPage(Page page);
+    List<BookEntity> getBooksByPage(Page page);
 
     long getCountOfRow();
 }

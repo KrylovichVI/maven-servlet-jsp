@@ -2,7 +2,6 @@ package com.krylovichVI.servlet.servlets;
 
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
-import com.krylovichVI.pojo.UserInfo;
 import com.krylovichVI.service.UserService;
 import com.krylovichVI.service.impl.DefaultUserService;
 import com.krylovichVI.servlet.WebUtils;

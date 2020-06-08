@@ -5,7 +5,6 @@ import com.krylovichVI.dao.imp.DefaultAuthUserDao;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.User;
-import com.krylovichVI.pojo.UserInfo;
 import com.krylovichVI.service.AuthUserService;
 
 import java.util.List;

@@ -4,7 +4,6 @@ import com.krylovichVI.dao.UserDao;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.User;
-import com.krylovichVI.pojo.UserInfo;
 import com.krylovichVI.service.impl.DefaultUserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

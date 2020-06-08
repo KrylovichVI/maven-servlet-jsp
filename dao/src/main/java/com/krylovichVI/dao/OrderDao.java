@@ -1,26 +1,26 @@
 package com.krylovichVI.dao;
 
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.Book;
-import com.krylovichVI.pojo.Order;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BookEntity;
+import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.pojo.Page;
 
 import java.util.List;
 
 public interface OrderDao {
-    List<Order> getOrders();
+    List<OrderEntity> getOrders();
 
-    long addOrder(AuthUser authUser, Order order, List<Book> book);
+    long addOrder(AuthUserEntity authUser, OrderEntity order, List<BookEntity> book);
 
-    void deleteOrder(Order order);
+    void deleteOrder(OrderEntity order);
 
-    void updateStatusOrder(Order order);
+    void updateStatusOrder(OrderEntity order);
 
-    Order getOrderById(Long id);
+    OrderEntity getOrderById(Long id);
 
-    List<Book> getBookByOrder();
+    List<BookEntity> getBookByOrder();
 
-    List<Order> getListOrderByPage(Page page);
+    List<OrderEntity> getListOrderByPage(Page page);
 
     long getCountOfRow();
 }

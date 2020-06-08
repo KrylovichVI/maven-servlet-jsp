@@ -1,8 +1,8 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.UserDao;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.User;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -20,47 +20,47 @@ public class DefaultUserDao implements UserDao {
     }
 
     @Override
-    public long addUserInfo( User user) {
+    public long addUserInfo(UserEntity user) {
         try{
             Long id = (Long) sessionFactory.getCurrentSession().save(user);
-            logger.info("user {} {} add info {}", user.getFirstName(), user.getLastName(), user.getUserInfo());
+            logger.info("user {} {} add info {}", user.getFirstName(), user.getLastName(), user.getPhone(), user.getEmail());
             return id;
         } catch (NoResultException e) {
-            logger.error("user {} error add info ", user.getFirstName(), user.getLastName(), user.getUserInfo(), e);
+            logger.error("user {} error add info ", user.getFirstName(), user.getLastName(), user.getPhone(), user.getEmail(), e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void updateUserInfo(User user, Long id) {
-        String sql = "UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName," +
-                " u.userInfo.phone = :phone, u.userInfo.email = :email where u.id = :id";
+    public void updateUserInfo(UserEntity user, Long id) {
+        String sql = "UPDATE UserEntity u SET u.firstName = :firstName, u.lastName = :lastName," +
+                " u.phone = :phone, u.email = :email where u.id = :id";
         try{
             sessionFactory.getCurrentSession().createQuery(sql)
                     .setParameter("firstName", user.getFirstName())
                     .setParameter("lastName", user.getLastName())
-                    .setParameter("email", user.getUserInfo().getEmail())
-                    .setParameter("phone", user.getUserInfo().getPhone())
+                    .setParameter("email", user.getEmail())
+                    .setParameter("phone", user.getPhone())
                     .setParameter("id", id)
                     .executeUpdate();
-            logger.info("user {} update info ", user.getFirstName(), user.getLastName(), user.getUserInfo());
+            logger.info("user {} update info ", user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
         } catch (NonUniqueObjectException e) {
-            logger.error("user {} error update info ", user.getFirstName(), user.getLastName(), user.getUserInfo(), e);
+            logger.error("user {} error update info ", user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), e);
             throw new RuntimeException(e);
         }
     }
 
 
     @Override
-    public void deleteUserInfo(User user) {
+    public void deleteUserInfo(UserEntity user) {
         sessionFactory.getCurrentSession().delete(user);
         logger.info("user {} delete user ", user.getFirstName(), user.getLastName());
     }
 
     @Override
-    public User getUserByAuthUser(AuthUser authUser) {
-        String sql = "SELECT u from User u where u.authUser = :authUser";
-        List<User> user = (List<User>) sessionFactory.getCurrentSession().createQuery(sql)
+    public UserEntity getUserByAuthUser(AuthUserEntity authUser) {
+        String sql = "SELECT u from UserEntity u where u.authUser = :authUser";
+        List<UserEntity> user = sessionFactory.getCurrentSession().createQuery(sql)
                 .setParameter("authUser", authUser).getResultList();
         if (user.isEmpty()){
             return null;

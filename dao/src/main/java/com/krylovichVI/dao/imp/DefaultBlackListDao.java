@@ -1,8 +1,8 @@
 package com.krylovichVI.dao.imp;
 
 import com.krylovichVI.dao.BlackListDao;
-import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.BlackList;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BlackListEntity;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,7 +20,7 @@ public class DefaultBlackListDao implements BlackListDao {
     }
 
     @Override
-    public void addUserInBlackList(AuthUser authUser, BlackList blackList) {
+    public void addUserInBlackList(AuthUserEntity authUser, BlackListEntity blackList) {
         try {
             blackList.setAuthUser(authUser);
             authUser.setBlackList(blackList);
@@ -33,7 +33,7 @@ public class DefaultBlackListDao implements BlackListDao {
     }
 
     @Override
-    public void deleteUserOfBlackList(BlackList blackList) {
+    public void deleteUserOfBlackList(BlackListEntity blackList) {
         Session session = factory.getCurrentSession();
         session.delete(blackList);
         session.flush();
@@ -41,9 +41,9 @@ public class DefaultBlackListDao implements BlackListDao {
     }
 
     @Override
-    public List<BlackList> getUsersOfBlackList() {
-        String sql = "select b from BlackList b";
-        List<BlackList> resultList = factory.getCurrentSession().createQuery(sql).getResultList();
+    public List<BlackListEntity> getUsersOfBlackList() {
+        String sql = "select b from BlackListEntity b";
+        List<BlackListEntity> resultList = factory.getCurrentSession().createQuery(sql).getResultList();
         return resultList;
     }
 }

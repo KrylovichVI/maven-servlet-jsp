@@ -1,7 +1,7 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.dao.config.DaoConfig;
-import com.krylovichVI.pojo.Book;
+import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Page;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ public class DefaultBookDaoTest {
 
     @Test
     void testAddBook(){
-        Book book = new Book("mybook", "my");
+        BookEntity book = new BookEntity("mybook", "my");
         long id = bookDao.addBook(book);
 
         assertEquals(bookDao.getBookById(id), book);
@@ -33,7 +33,7 @@ public class DefaultBookDaoTest {
     @Test
 
     void testOfDeleteBook(){
-        Book book = new Book("Book", "Author");
+        BookEntity book = new BookEntity("Book", "Author");
         long id = bookDao.addBook(book);
         bookDao.deleteBook(book);
 
@@ -42,11 +42,11 @@ public class DefaultBookDaoTest {
     }
     @Test
     void testOfListBooks(){
-        Book bookFirst = new Book("Book1", "Author");
-        Book bookSecond = new Book("Book2", "Author");
+        BookEntity bookFirst = new BookEntity("Book1", "Author");
+        BookEntity bookSecond = new BookEntity("Book2", "Author");
         bookDao.addBook(bookFirst);
         bookDao.addBook(bookSecond);
-        List<Book> bookList = bookDao.getAllBooks();
+        List<BookEntity> bookList = bookDao.getAllBooks();
 
         assertTrue(bookList.contains(bookFirst));
         assertTrue(bookList.contains(bookSecond));
@@ -57,7 +57,7 @@ public class DefaultBookDaoTest {
 
     @Test
     void testOfGetBookById(){
-        Book book = new Book("Head First", "Author");
+        BookEntity book = new BookEntity("Head First", "Author");
         long id = bookDao.addBook(book);
 
         assertNotNull(bookDao.getBookById(id));
@@ -67,9 +67,9 @@ public class DefaultBookDaoTest {
 
     @Test
     void testOfCountRow(){
-        Book bookFirst = new Book("Book1", "Author");
-        Book bookSecond = new Book("Book2", "Author");
-        Book bookThird = new Book("Book3", "Author");
+        BookEntity bookFirst = new BookEntity("Book1", "Author");
+        BookEntity bookSecond = new BookEntity("Book2", "Author");
+        BookEntity bookThird = new BookEntity("Book3", "Author");
 
         bookDao.addBook(bookFirst);
         bookDao.addBook(bookSecond);
@@ -86,12 +86,12 @@ public class DefaultBookDaoTest {
 
     @Test
     void testOfFirstPage(){
-        Book bookFirst = new Book("Book1", "Author");
-        Book bookSecond = new Book("Book2", "Author");
-        Book bookThird = new Book("Book3", "Author");
-        Book bookForth = new Book("Book4", "Author");
-        Book bookFifth = new Book("Book5", "Author");
-        Book bookSix = new Book("Book6", "Author");
+        BookEntity bookFirst = new BookEntity("Book1", "Author");
+        BookEntity bookSecond = new BookEntity("Book2", "Author");
+        BookEntity bookThird = new BookEntity("Book3", "Author");
+        BookEntity bookForth = new BookEntity("Book4", "Author");
+        BookEntity bookFifth = new BookEntity("Book5", "Author");
+        BookEntity bookSix = new BookEntity("Book6", "Author");
 
         bookDao.addBook(bookFirst);
         bookDao.addBook(bookSecond);
@@ -100,7 +100,7 @@ public class DefaultBookDaoTest {
         bookDao.addBook(bookFifth);
         bookDao.addBook(bookSix);
 
-        List<Book> booksByPage = bookDao.getBooksByPage(new Page(1, 1));
+        List<BookEntity> booksByPage = bookDao.getBooksByPage(new Page(1, 1));
 
         assertEquals(booksByPage.size(), 1);
 

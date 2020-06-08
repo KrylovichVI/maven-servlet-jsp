@@ -1,6 +1,9 @@
 package com.krylovichVI.dao;
 
 import com.krylovichVI.dao.config.DaoConfig;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.OrderEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,14 +31,14 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testAddOrder() {
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), null);
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity( "Misha", "Kernasovskiy", "12345667", "test@gmail.com", null);
 
         authUserDao.saveAuthUser(admin, user);
-        Order testOrder = new Order(admin, Date.valueOf("2020-04-20"), Status.IN_PROCESSING, "TestOrder");
-        List<Order> ordersBefore = orderDao.getOrders();
+        OrderEntity testOrder = new OrderEntity(admin, Date.valueOf("2020-04-20"), Status.IN_PROCESSING, "TestOrder");
+        List<OrderEntity> ordersBefore = orderDao.getOrders();
         orderDao.addOrder(admin, testOrder, Collections.emptyList());
-        List<Order> ordersAfter = orderDao.getOrders();
+        List<OrderEntity> ordersAfter = orderDao.getOrders();
 
         assertEquals(ordersBefore.size() + 1, ordersAfter.size());
 
@@ -45,14 +48,14 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testOfGetOrderById() {
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), null);
-        Order testOrder = new Order(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity( "Misha", "Kernasovskiy","12345667", "test@gmail.com", null);
+        OrderEntity testOrder = new OrderEntity(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
 
         authUserDao.saveAuthUser(admin, user);
         long id = orderDao.addOrder(admin, testOrder, Collections.emptyList());
 
-        Order orderById = orderDao.getOrderById(id);
+        OrderEntity orderById = orderDao.getOrderById(id);
 
         assertEquals(orderById.getAuthUser(), testOrder.getAuthUser());
         assertEquals(orderById.getName(), testOrder.getName());
@@ -64,13 +67,13 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testOfListOrder() {
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), null);
-        Order testOrder = new Order(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity("Misha", "Kernasovskiy", "12345667", "test@gmail.com", null);
+        OrderEntity testOrder = new OrderEntity(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
 
         authUserDao.saveAuthUser(admin, user);
         orderDao.addOrder(admin, testOrder, Collections.emptyList());
-        List<Order> ordersOfBefore = orderDao.getOrders();
+        List<OrderEntity> ordersOfBefore = orderDao.getOrders();
 
         assertFalse(ordersOfBefore.isEmpty());
 
@@ -80,16 +83,16 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testOfDeleteOrder() {
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), null);
-        Order testOrder = new Order(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity( "Misha", "Kernasovskiy", "12345667", "test@gmail.com", null);
+        OrderEntity testOrder = new OrderEntity(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
 
-        List<Order> ordersBefore = orderDao.getOrders();
+        List<OrderEntity> ordersBefore = orderDao.getOrders();
 
         authUserDao.saveAuthUser(admin, user);
         orderDao.addOrder(admin, testOrder, Collections.emptyList());
         orderDao.deleteOrder(testOrder);
-        List<Order> ordersAfter = orderDao.getOrders();
+        List<OrderEntity> ordersAfter = orderDao.getOrders();
 
         assertEquals(ordersBefore.size(), ordersAfter.size());
 
@@ -98,7 +101,7 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testAddFailOrder(){
-        Order testOrder = new Order(null, null, null, null);
+        OrderEntity testOrder = new OrderEntity(null, null, null, null);
 
         Throwable thrown = assertThrows(NullPointerException.class, () -> {
             orderDao.addOrder(null, testOrder, Collections.emptyList());
@@ -108,9 +111,9 @@ public class DefaultOrderDaoTest {
 
     @Test
     void testOfUpdateStatus(){
-        AuthUser admin = new AuthUser("admin", "admin", Role.ADMIN, null);
-        User user = new User("Misha", "Kernasovskiy", new UserInfo("12345667", "test@gmail.com"), null);
-        Order testOrder = new Order(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
+        AuthUserEntity admin = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        UserEntity user = new UserEntity( "Misha", "Kernasovskiy", "12345667", "test@gmail.com", null);
+        OrderEntity testOrder = new OrderEntity(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
 
         authUserDao.saveAuthUser(admin, user);
         orderDao.addOrder(admin, testOrder, Collections.emptyList());
