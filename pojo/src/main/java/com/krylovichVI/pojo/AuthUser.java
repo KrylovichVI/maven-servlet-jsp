@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class AuthUser {
     private Long id;
     private String username;

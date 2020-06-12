@@ -4,7 +4,9 @@ import com.krylovichVI.dao.config.DaoConfig;
 import com.krylovichVI.dao.entity.AuthUserEntity;
 import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.dao.entity.UserEntity;
-import com.krylovichVI.pojo.*;
+import com.krylovichVI.pojo.Role;
+import com.krylovichVI.pojo.Status;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Ignore
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DaoConfig.class})
 @Transactional
@@ -42,7 +45,7 @@ public class DefaultOrderDaoTest {
 
         assertEquals(ordersBefore.size() + 1, ordersAfter.size());
 
-        authUserDao.deleteAuthUser(admin);
+        authUserDao.deleteAuthUser(admin.getUsername());
         orderDao.deleteOrder(testOrder);
     }
 
@@ -53,7 +56,7 @@ public class DefaultOrderDaoTest {
         OrderEntity testOrder = new OrderEntity(admin, Date.valueOf(LocalDate.now()), Status.IN_PROCESSING, "TestOrderById");
 
         authUserDao.saveAuthUser(admin, user);
-        long id = orderDao.addOrder(admin, testOrder, Collections.emptyList());
+        long id = orderDao.addOrder(admin, testOrder, Collections.EMPTY_LIST);
 
         OrderEntity orderById = orderDao.getOrderById(id);
 
@@ -61,7 +64,7 @@ public class DefaultOrderDaoTest {
         assertEquals(orderById.getName(), testOrder.getName());
         assertEquals(orderById.getStatus(), testOrder.getStatus());
 
-        authUserDao.deleteAuthUser(admin);
+        authUserDao.deleteAuthUser(admin.getUsername());
         orderDao.deleteOrder(testOrder);
     }
 
@@ -77,7 +80,7 @@ public class DefaultOrderDaoTest {
 
         assertFalse(ordersOfBefore.isEmpty());
 
-        authUserDao.deleteAuthUser(admin);
+        authUserDao.deleteAuthUser(admin.getUsername());
         orderDao.deleteOrder(testOrder);
     }
 
@@ -96,7 +99,7 @@ public class DefaultOrderDaoTest {
 
         assertEquals(ordersBefore.size(), ordersAfter.size());
 
-        authUserDao.deleteAuthUser(admin);
+        authUserDao.deleteAuthUser(admin.getUsername());
     }
 
     @Test
@@ -122,7 +125,7 @@ public class DefaultOrderDaoTest {
 
         assertEquals(orderDao.getOrderById(testOrder.getId()).getStatus(), Status.CANCELED);
 
-        authUserDao.deleteAuthUser(admin);
+        authUserDao.deleteAuthUser(admin.getUsername());
         orderDao.deleteOrder(testOrder);
     }
 }

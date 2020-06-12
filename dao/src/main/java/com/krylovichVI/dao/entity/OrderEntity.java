@@ -9,11 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id"})
-@ToString
 @Entity
 @Table(name = "orders")
 public class OrderEntity {
@@ -50,5 +46,64 @@ public class OrderEntity {
         this.dateCreate = dateCreate;
         this.status = status;
         this.name = name;
+    }
+
+    public OrderEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public AuthUserEntity getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(AuthUserEntity authUser) {
+        this.authUser = authUser;
+    }
+
+    public Set<BookEntity> getBookSet() {
+        return bookSet;
+    }
+
+    public void setBookSet(Set<BookEntity> bookSet) {
+        this.bookSet = bookSet;
     }
 }

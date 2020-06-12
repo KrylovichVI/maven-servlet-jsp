@@ -8,14 +8,14 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class BlackList {
     private Long id;
-    private AuthUser authUser;
+    private Long authUserId;
     private Date dateBlock;
 
-    public BlackList(Date dateBlock, AuthUser authUser) {
-        this.authUser = authUser;
+    public BlackList(Date dateBlock, Long authUserId) {
+        this.authUserId = authUserId;
         this.dateBlock = dateBlock;
     }
 }

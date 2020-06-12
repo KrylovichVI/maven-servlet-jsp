@@ -4,7 +4,7 @@ import com.krylovichVI.dao.config.DaoConfig;
 import com.krylovichVI.dao.entity.AuthUserEntity;
 import com.krylovichVI.dao.entity.BlackListEntity;
 import com.krylovichVI.dao.entity.UserEntity;
-import com.krylovichVI.pojo.*;
+import com.krylovichVI.pojo.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class DefaultBlackListDaoTest {
 
         assertTrue(existUserOfBlackList(authUser));
 
-        authUserDao.deleteAuthUser(authUser);
+        authUserDao.deleteAuthUser(authUser.getUsername());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class DefaultBlackListDaoTest {
         authUserDao.saveAuthUser(authUser, user);
         blackListDao.addUserInBlackList(authUser, blackList);
 
-        authUserDao.deleteAuthUser(authUser);
+        authUserDao.deleteAuthUser(authUser.getUsername());
         assertFalse(existUserOfBlackList(authUser));
     }
 
@@ -74,7 +74,7 @@ public class DefaultBlackListDaoTest {
         blackListDao.addUserInBlackList(authUser, blackList);
         assertTrue(existUserOfBlackList(authUser));
 
-        authUserDao.deleteAuthUser(authUser);
+        authUserDao.deleteAuthUser(authUser.getUsername());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class DefaultBlackListDaoTest {
 
         assertEquals(usersOfBlackList.size(), 2);
 
-        authUserDao.deleteAuthUser(authUserFirst);
-        authUserDao.deleteAuthUser(authUserSecond);
+        authUserDao.deleteAuthUser(authUserFirst.getUsername());
+        authUserDao.deleteAuthUser(authUserSecond.getUsername());
     }
 }

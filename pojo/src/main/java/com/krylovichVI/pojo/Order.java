@@ -11,18 +11,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class Order {
     private Long id;
     private Date dateCreate;
     private Date dateUpdate;
     private Status status;
     private String name;
-    private AuthUser authUser;
+    private Long authUserId;
     private Set<Book> bookSet = new HashSet<>();
 
-    public Order(AuthUser authUser, Date dateCreate, Status status, String name) {
-        this.authUser = authUser;
+    public Order(Long authUserId, Date dateCreate, Status status, String name) {
+        this.authUserId = authUserId;
         this.dateCreate = dateCreate;
         this.status = status;
         this.name = name;

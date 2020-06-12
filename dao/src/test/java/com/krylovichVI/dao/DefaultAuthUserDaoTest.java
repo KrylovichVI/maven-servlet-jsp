@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = DaoConfig.class)
+@ContextConfiguration(classes = {DaoConfig.class})
 @Transactional
 public class DefaultAuthUserDaoTest {
     @Autowired
@@ -31,17 +31,18 @@ public class DefaultAuthUserDaoTest {
         long id = authUserDao.saveAuthUser(authUser, userEmpty);
         AuthUserEntity userDaoById = authUserDao.getById(id);
         assertEquals(authUser.getUsername(),  userDaoById.getUsername());
-        authUserDao.deleteAuthUser(userDaoById);
+        authUserDao.deleteAuthUser(userDaoById.getUsername());
     }
 
     @Test
     void testByLogin(){
         AuthUserEntity authUser = new AuthUserEntity("myTestUser", "123456", Role.USER, null);
-        UserEntity userEmpty = new UserEntity("", "", "", "", null);
+        UserEntity userEmpty = new UserEntity("1", "2", "3", "4", null);
         authUserDao.saveAuthUser(authUser, userEmpty);
+
         AuthUserEntity myTestUser = authUserDao.getByLogin(authUser.getUsername());
         assertNotNull(myTestUser);
-        authUserDao.deleteAuthUser(myTestUser);
+        authUserDao.deleteAuthUser(myTestUser.getUsername());
     }
 
     @Test
@@ -50,8 +51,9 @@ public class DefaultAuthUserDaoTest {
         UserEntity userEmpty = new UserEntity("", "", "", "", null);
         authUserDao.saveAuthUser(authUser, userEmpty);
         AuthUserEntity userDaoById = authUserDao.getById(authUser.getId());
+
         assertEquals(authUser, userDaoById);
-        authUserDao.deleteAuthUser(userDaoById);
+        authUserDao.deleteAuthUser(userDaoById.getUsername());
     }
 
     @Test
@@ -71,8 +73,8 @@ public class DefaultAuthUserDaoTest {
 
         assertEquals(users.size(), 3);
 
-        authUserDao.deleteAuthUser(authUserFirst);
-        authUserDao.deleteAuthUser(authUserSecond);
-        authUserDao.deleteAuthUser(authUserThread);
+        authUserDao.deleteAuthUser(authUserFirst.getUsername());
+        authUserDao.deleteAuthUser(authUserSecond.getUsername());
+        authUserDao.deleteAuthUser(authUserThread.getUsername());
     }
 }

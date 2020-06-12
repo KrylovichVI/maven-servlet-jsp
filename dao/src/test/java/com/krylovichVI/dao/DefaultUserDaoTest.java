@@ -32,7 +32,7 @@ public class DefaultUserDaoTest {
 
         assertEquals(userByAuthId, user);
 
-        authUser.deleteAuthUser(admin);
+        authUser.deleteAuthUser(admin.getUsername());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class DefaultUserDaoTest {
         assertEquals(userByAuthId.getLastName(), user.getLastName());
         assertEquals(userByAuthId.getPhone(), user.getPhone());
 
-        authUser.deleteAuthUser(admin);
+        authUser.deleteAuthUser(admin.getUsername());
     }
 
     @Test

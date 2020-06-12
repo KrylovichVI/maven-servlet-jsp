@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@Import(HibernateConfig.class)
+@Import({HibernateConfig.class})
 @EnableTransactionManagement
 public class DaoConfig {
 

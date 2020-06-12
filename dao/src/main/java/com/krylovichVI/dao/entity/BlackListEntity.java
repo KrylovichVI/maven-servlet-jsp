@@ -1,17 +1,11 @@
 package com.krylovichVI.dao.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
 
-@Data
-@NoArgsConstructor
-@EqualsAndHashCode(of = {"id"})
-@ToString
+@AllArgsConstructor
 @Entity
 @Table(name = "black_list")
 public class BlackListEntity {
@@ -28,6 +22,33 @@ public class BlackListEntity {
 
     public BlackListEntity(Date dateBlock, AuthUserEntity authUser) {
         this.authUser = authUser;
+        this.dateBlock = dateBlock;
+    }
+
+    public BlackListEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUserEntity getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(AuthUserEntity authUser) {
+        this.authUser = authUser;
+    }
+
+    public Date getDateBlock() {
+        return dateBlock;
+    }
+
+    public void setDateBlock(Date dateBlock) {
         this.dateBlock = dateBlock;
     }
 }

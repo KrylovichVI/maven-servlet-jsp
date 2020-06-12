@@ -9,8 +9,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="servlet-jsp" />
         <module name="service" />
+        <module name="servlet-jsp" />
         <module name="pojo" />
       </profile>
       <profile name="Annotation profile for maven-servlet-jsp" enabled="true">

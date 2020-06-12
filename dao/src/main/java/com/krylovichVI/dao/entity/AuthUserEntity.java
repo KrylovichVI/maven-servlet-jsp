@@ -2,18 +2,14 @@ package com.krylovichVI.dao.entity;
 
 
 import com.krylovichVI.pojo.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id"})
-@ToString
 @Entity
 @Table(name = "auth_user")
 public class AuthUserEntity {
@@ -45,5 +41,64 @@ public class AuthUserEntity {
         this.password = password;
         this.role = role;
         this.user = user;
+    }
+
+    public AuthUserEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public BlackListEntity getBlackList() {
+        return blackList;
+    }
+
+    public void setBlackList(BlackListEntity blackList) {
+        this.blackList = blackList;
+    }
+
+    public List<OrderEntity> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<OrderEntity> orderList) {
+        this.orderList = orderList;
     }
 }

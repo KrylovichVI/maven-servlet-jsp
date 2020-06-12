@@ -14,5 +14,5 @@ public interface AuthUserDao {
 
     AuthUserEntity getById(Long id);
 
-    void deleteAuthUser(AuthUserEntity authUser);
+    void deleteAuthUser(String username);
 }

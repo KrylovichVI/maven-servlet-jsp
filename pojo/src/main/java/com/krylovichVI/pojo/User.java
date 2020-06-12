@@ -6,20 +6,20 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class User {
     private Long id;
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
-    private AuthUser authUser;
+    private Long authUserId;
 
-    public User(String firstName, String lastName, String phone, String email, AuthUser authUser) {
+    public User(String firstName, String lastName, String phone, String email, Long authUserId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
-        this.authUser = authUser;
+        this.authUserId = authUserId;
     }
 }
