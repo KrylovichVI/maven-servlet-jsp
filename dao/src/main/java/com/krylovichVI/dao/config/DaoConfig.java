@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import({HibernateConfig.class})
 @EnableTransactionManagement
 public class DaoConfig {
-
     private final SessionFactory sessionFactory;
 
     public DaoConfig(SessionFactory sessionFactory) {
@@ -38,5 +37,4 @@ public class DaoConfig {
     @Bean
     public UserDao userDao() { return new DefaultUserDao(sessionFactory);
     }
-
 }

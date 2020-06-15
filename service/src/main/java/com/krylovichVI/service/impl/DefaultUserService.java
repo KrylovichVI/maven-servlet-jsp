@@ -1,41 +1,42 @@
 package com.krylovichVI.service.impl;
 
 import com.krylovichVI.dao.UserDao;
-import com.krylovichVI.dao.imp.DefaultUserDao;
+import com.krylovichVI.dao.converters.AuthUserConverter;
+import com.krylovichVI.dao.converters.UserConverter;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
-import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DefaultUserService implements UserService {
-    private static UserService instance;
     private UserDao userDao;
-    private AuthUserService authUserService;
+    private UserConverter userConverter;
+    private AuthUserConverter authUserConverter;
 
-    private DefaultUserService() {
-        userDao = DefaultUserDao.getInstance();
-        authUserService = DefaultAuthUserService.getInstance();
+    @Autowired
+    public DefaultUserService(UserDao userDao, UserConverter userConverter, AuthUserConverter authUserConverter) {
+        this.userDao = userDao;
+        this.userConverter = userConverter;
+        this.authUserConverter = authUserConverter;
     }
 
-    public static UserService getInstance(){
-        if(instance == null){
-            instance = new DefaultUserService();
-        }
-        return instance;
-    }
 
     @Override
     public void updateUserInfo(User user) {
-        User userByAuthId = userDao.getUserByAuthUser(user.getAuthUser());
+        UserEntity userEntity = userConverter.toEntity(user);
+        User userByAuthId = userConverter.toDto(userDao.getUserByAuthUser(userEntity.getAuthUser()));
         if(userByAuthId != null){
-            userDao.updateUserInfo(user, userByAuthId.getId());
+            userDao.updateUserInfo(userEntity, userByAuthId.getId());
         } else {
-            userDao.addUserInfo(user);
+            userDao.addUserInfo(userEntity);
         }
     }
 
     @Override
     public User getUserByAuthUser(AuthUser authUser) {
-        return userDao.getUserByAuthUser(authUser);
+        return userConverter.toDto(userDao.getUserByAuthUser(authUserConverter.toEntity(authUser)));
     }
 }

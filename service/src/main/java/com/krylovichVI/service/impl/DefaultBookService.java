@@ -1,48 +1,50 @@
 package com.krylovichVI.service.impl;
 
 import com.krylovichVI.dao.BookDao;
-import com.krylovichVI.dao.imp.DefaultBookDao;
+import com.krylovichVI.dao.converters.BookConverter;
+import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Page;
 import com.krylovichVI.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class DefaultBookService implements BookService {
     private final int MAX_ELEMENT_OF_PAGE = 5;
-    private static BookService instance;
     private BookDao bookDao;
+    private BookConverter bookConverter;
 
-    private DefaultBookService(){
-        bookDao = DefaultBookDao.getInstance();
+    @Autowired
+    public DefaultBookService(BookDao bookDao, BookConverter bookConverter) {
+        this.bookDao = bookDao;
+        this.bookConverter = bookConverter;
     }
 
-    public static BookService getInstance(){
-        synchronized (BookService.class) {
-            if (instance == null) {
-                instance = new DefaultBookService();
-            }
-            return instance;
-        }
-    }
-
+    @Transactional
     @Override
     public List<Book> getBooks() {
-        return bookDao.getAllBooks();
+        return bookConverter.toDto(bookDao.getAllBooks());
     }
 
+    @Transactional
     @Override
     public long addBook(Book book) {
-        return bookDao.addBook(book);
+        return bookDao.addBook(bookConverter.toEntity(book));
     }
 
+    @Transactional
     @Override
     public void deleteBook(Long id) {
-        Book bookById = bookDao.getBookById(id);
+        BookEntity bookById = bookDao.getBookById(id);
         bookDao.deleteBook(bookById);
     }
 
+    @Transactional
     @Override
     public long getCountOfPage() {
         long countOfRow = bookDao.getCountOfRow();
@@ -53,9 +55,10 @@ public class DefaultBookService implements BookService {
         }
     }
 
+    @Transactional
     @Override
     public List<Book> getBooksByPage(int currentPage) {
-        List<Book> books = bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
+        List<Book> books = bookConverter.toDto(bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE)));
         if(!books.isEmpty()){
             return books;
         } else {
@@ -63,16 +66,18 @@ public class DefaultBookService implements BookService {
         }
     }
 
+    @Transactional
     @Override
     public Book getBookById(Long bookId) {
-        return bookDao.getBookById(bookId);
+        return bookConverter.toDto(bookDao.getBookById(bookId));
     }
 
+    @Transactional
     @Override
     public List<Book> getListOfBookById(String[] bookId) {
         List<Book> bookList = new ArrayList<>();
         for(String str : bookId){
-            bookList.add(bookDao.getBookById(Long.valueOf(str)));
+            bookList.add(bookConverter.toDto(bookDao.getBookById(Long.valueOf(str))));
         }
         return bookList;
     }

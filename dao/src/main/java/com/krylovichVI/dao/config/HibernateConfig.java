@@ -11,7 +11,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@Import(SettingsConfig.class)
+@Import({SettingsConfig.class, ConverterConfig.class})
 public class HibernateConfig {
     private final static int MAX_POOL_SIZE = 20;
 
@@ -36,7 +36,7 @@ public class HibernateConfig {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactoryBean(){
+    public LocalSessionFactoryBean entityManagerFactory(){
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(dataSource());
         localSessionFactoryBean.setPackagesToScan("com.krylovichVI.dao.entity");
@@ -48,7 +48,7 @@ public class HibernateConfig {
     @Bean
     public PlatformTransactionManager transactionManager(){
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactoryBean().getObject());
+        transactionManager.setSessionFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 

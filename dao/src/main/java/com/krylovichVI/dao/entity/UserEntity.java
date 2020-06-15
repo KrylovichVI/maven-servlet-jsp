@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import javax.persistence.*;
 
 @AllArgsConstructor
-@Cacheable
+//@Cacheable
 @Entity
 @Table(name = "user")
 public class UserEntity {

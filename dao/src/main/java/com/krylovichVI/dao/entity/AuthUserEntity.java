@@ -43,6 +43,11 @@ public class AuthUserEntity {
         this.user = user;
     }
 
+    public AuthUserEntity(Long id, BlackListEntity blackList) {
+        this.id = id;
+        this.blackList = blackList;
+    }
+
     public AuthUserEntity() {
     }
 

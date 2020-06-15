@@ -27,4 +27,9 @@ public class AuthUser {
         this.role = role;
         this.user = user;
     }
+
+    public AuthUser(Long id, BlackList blackList){
+        this.id = id;
+        this.blackList = blackList;
+    }
 }
