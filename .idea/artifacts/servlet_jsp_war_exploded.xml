@@ -20,7 +20,6 @@
           <element id="archive" name="service-1.0-SNAPSHOT.jar">
             <element id="module-output" name="service" />
           </element>
-          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.1.RELEASE" />
@@ -29,6 +28,15 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.2.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.28" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.12.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.12.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.12.1" />
+          <element id="library" level="project" name="Maven: oro:oro:2.0.8" />
+          <element id="library" level="project" name="Maven: cobertura:cobertura:1.8" />
+          <element id="library" level="project" name="Maven: asm:asm:2.2.1" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.9" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -6,20 +6,16 @@ import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Page;
 import com.krylovichVI.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class DefaultBookService implements BookService {
     private final int MAX_ELEMENT_OF_PAGE = 5;
     private BookDao bookDao;
     private BookConverter bookConverter;
 
-    @Autowired
     public DefaultBookService(BookDao bookDao, BookConverter bookConverter) {
         this.bookDao = bookDao;
         this.bookConverter = bookConverter;
@@ -58,7 +54,9 @@ public class DefaultBookService implements BookService {
     @Transactional
     @Override
     public List<Book> getBooksByPage(int currentPage) {
-        List<Book> books = bookConverter.toDto(bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE)));
+        List<BookEntity> booksByPage = bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
+
+        List<Book> books = bookConverter.toDto(booksByPage);
         if(!books.isEmpty()){
             return books;
         } else {
@@ -77,7 +75,8 @@ public class DefaultBookService implements BookService {
     public List<Book> getListOfBookById(String[] bookId) {
         List<Book> bookList = new ArrayList<>();
         for(String str : bookId){
-            bookList.add(bookConverter.toDto(bookDao.getBookById(Long.valueOf(str))));
+            BookEntity bookById = bookDao.getBookById(Long.valueOf(str));
+            bookList.add(bookConverter.toDto(bookById));
         }
         return bookList;
     }

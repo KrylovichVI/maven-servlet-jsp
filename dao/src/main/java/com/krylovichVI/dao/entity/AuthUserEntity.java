@@ -2,14 +2,13 @@ package com.krylovichVI.dao.entity;
 
 
 import com.krylovichVI.pojo.Role;
-import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "auth_user")
 public class AuthUserEntity {

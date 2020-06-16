@@ -4,18 +4,17 @@ import com.krylovichVI.dao.OrderDao;
 import com.krylovichVI.dao.converters.AuthUserConverter;
 import com.krylovichVI.dao.converters.BookConverter;
 import com.krylovichVI.dao.converters.OrderConverter;
+import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.pojo.*;
 import com.krylovichVI.service.BookService;
 import com.krylovichVI.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class DefaultOrderService implements OrderService {
     private final int MAX_ELEMENT_OF_PAGE = 5;
     private OrderDao orderDao;
@@ -26,7 +25,6 @@ public class DefaultOrderService implements OrderService {
 
 
 
-    @Autowired
     public DefaultOrderService(OrderConverter orderConverter, OrderDao orderDao, AuthUserConverter authUserConverter, BookConverter bookConverter, BookService bookService) {
         this.orderConverter = orderConverter;
         this.orderDao = orderDao;
@@ -35,7 +33,7 @@ public class DefaultOrderService implements OrderService {
         this.bookService = bookService;
     }
 
-
+    @Transactional
     @Override
     public List<Order> getOrdersOfUser(AuthUser authUser) {
         List<Order> orders = orderConverter.toDto(orderDao.getOrders());
@@ -48,6 +46,7 @@ public class DefaultOrderService implements OrderService {
         return result;
     }
 
+    @Transactional
     @Override
     public long addOrder(String orderName, AuthUser authUser, List<Book> book) {
         if (authUser != null) {
@@ -65,12 +64,14 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteOrder(Long orderId) {
         Order order = orderConverter.toDto(orderDao.getOrderById(orderId));
         orderDao.deleteOrder(orderConverter.toEntity(order));
     }
 
+    @Transactional
     @Override
     public Long updateStatusOrder(Long id, String status) {
         Order orderById = getOrderById(id);
@@ -84,11 +85,13 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
+    @Transactional
     @Override
     public Order getOrderById(Long id) {
         return orderConverter.toDto(orderDao.getOrderById(id));
     }
 
+    @Transactional
     @Override
     public List<Book> getBookByOrder() {
         List<Book> bookByOrder = bookConverter.toDto(orderDao.getBookByOrder());
@@ -100,9 +103,11 @@ public class DefaultOrderService implements OrderService {
         return allBooks;
     }
 
+    @Transactional
     @Override
     public List<Order> getOrderByPage(int currentPage) {
-        List<Order> orders = orderConverter.toDto(orderDao.getListOrderByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE)));
+        List<OrderEntity> listOrderByPage = orderDao.getListOrderByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
+        List<Order> orders = orderConverter.toDto(listOrderByPage);
         if(!orders.isEmpty()){
             return orders;
         } else {
@@ -110,6 +115,7 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
+    @Transactional
     @Override
     public long getCountOfPage() {
         long countOfRow = orderDao.getCountOfRow();

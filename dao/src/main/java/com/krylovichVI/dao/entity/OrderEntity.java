@@ -1,7 +1,6 @@
 package com.krylovichVI.dao.entity;
 
 import com.krylovichVI.pojo.Status;
-import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -9,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "orders")
 public class OrderEntity {

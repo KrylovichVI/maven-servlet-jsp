@@ -1,12 +1,10 @@
 package com.krylovichVI.dao.entity;
 
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "books")
 public class BookEntity {

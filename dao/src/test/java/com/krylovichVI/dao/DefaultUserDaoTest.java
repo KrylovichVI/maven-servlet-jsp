@@ -58,6 +58,5 @@ public class DefaultUserDaoTest {
         long id = -1;
         id = userDao.addUserInfo(user);
         assertNotEquals(id, -1);
-
     }
 }

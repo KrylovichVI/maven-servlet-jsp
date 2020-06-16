@@ -1,6 +1,10 @@
 package com.krylovichVI.service;
 
 import com.krylovichVI.dao.BlackListDao;
+import com.krylovichVI.dao.converters.AuthUserConverter;
+import com.krylovichVI.dao.converters.BlackListConverter;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BlackListEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.BlackList;
 import com.krylovichVI.pojo.Role;
@@ -10,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -20,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 public class BlackListServiceTest {
-
     @Mock
     private BlackListDao blackListDao;
 

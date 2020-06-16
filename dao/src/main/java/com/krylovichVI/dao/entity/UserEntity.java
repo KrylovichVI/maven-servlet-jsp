@@ -1,10 +1,8 @@
 package com.krylovichVI.dao.entity;
 
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 //@Cacheable
 @Entity
 @Table(name = "user")

@@ -6,7 +6,6 @@ import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.Status;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DaoConfig.class})
 @Transactional

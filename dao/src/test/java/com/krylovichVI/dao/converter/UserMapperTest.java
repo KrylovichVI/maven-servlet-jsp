@@ -1,4 +1,4 @@
-package com.krylovichVI.dao.mapper;
+package com.krylovichVI.dao.converter;
 
 import com.krylovichVI.dao.config.HibernateConfig;
 import com.krylovichVI.dao.converters.UserConverter;

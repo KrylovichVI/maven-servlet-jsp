@@ -3,23 +3,21 @@ package com.krylovichVI.service.impl;
 import com.krylovichVI.dao.AuthUserDao;
 import com.krylovichVI.dao.converters.AuthUserConverter;
 import com.krylovichVI.dao.converters.UserConverter;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Role;
 import com.krylovichVI.pojo.User;
 import com.krylovichVI.service.AuthUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 public class DefaultAuthUserService implements AuthUserService {
     private AuthUserDao authUserDao;
     private AuthUserConverter authUserConverter;
     private UserConverter userConverter;
 
-    @Autowired
     public DefaultAuthUserService(AuthUserDao authUserDao, AuthUserConverter authUserConverter, UserConverter userConverter) {
         this.authUserDao = authUserDao;
         this.authUserConverter = authUserConverter;
@@ -38,7 +36,9 @@ public class DefaultAuthUserService implements AuthUserService {
         User userEmpty = new User("", "", "", "", null);
         AuthUser authUser = new AuthUser(username, password, Role.valueOf(role), null);
 
-        return authUserDao.saveAuthUser(authUserConverter.toEntity(authUser), userConverter.toEntity(userEmpty));
+        AuthUserEntity authUserEntity = authUserConverter.toEntity(authUser);
+        UserEntity userEntity = userConverter.toEntity(userEmpty);
+        return authUserDao.saveAuthUser(authUserEntity, userEntity);
     }
 
     @Transactional

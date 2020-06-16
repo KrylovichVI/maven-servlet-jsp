@@ -7,23 +7,20 @@ import com.krylovichVI.dao.entity.UserEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
 import com.krylovichVI.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
 public class DefaultUserService implements UserService {
     private UserDao userDao;
     private UserConverter userConverter;
     private AuthUserConverter authUserConverter;
 
-    @Autowired
     public DefaultUserService(UserDao userDao, UserConverter userConverter, AuthUserConverter authUserConverter) {
         this.userDao = userDao;
         this.userConverter = userConverter;
         this.authUserConverter = authUserConverter;
     }
 
-
+    @Transactional
     @Override
     public void updateUserInfo(User user) {
         UserEntity userEntity = userConverter.toEntity(user);
@@ -35,6 +32,7 @@ public class DefaultUserService implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public User getUserByAuthUser(AuthUser authUser) {
         return userConverter.toDto(userDao.getUserByAuthUser(authUserConverter.toEntity(authUser)));

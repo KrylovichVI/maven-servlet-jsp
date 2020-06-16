@@ -1,23 +1,67 @@
 package com.krylovichVI.service.config;
 
+import com.krylovichVI.dao.config.ConverterConfig;
 import com.krylovichVI.dao.config.DaoConfig;
-import com.krylovichVI.service.AuthUserService;
-import com.krylovichVI.service.impl.DefaultAuthUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.krylovichVI.service.*;
+import com.krylovichVI.service.impl.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 
-@Service
+@Configuration
 public class ServiceConfig {
 
     private DaoConfig daoConfig;
 
-    public ServiceConfig(DaoConfig daoConfig) {
+    private ConverterConfig converterConfig;
+
+    public ServiceConfig(DaoConfig daoConfig, ConverterConfig converterConfig) {
         this.daoConfig = daoConfig;
+        this.converterConfig = converterConfig;
     }
 
     @Bean
-    private AuthUserService authUserService(){
-        return new DefaultAuthUserService(authUserDao, authUserMapper, userMapper);
+    public AuthUserService authUserService(){
+        return new DefaultAuthUserService(
+                daoConfig.authUserDao(),
+                converterConfig.authUserConverter(),
+                converterConfig.userConverter()
+        );
+    }
+
+    @Bean
+    public BlackListService blackListService(){
+        return new DefaultBlackListService(
+                daoConfig.blackListDao(),
+                converterConfig.authUserConverter(),
+                converterConfig.blackListConverter()
+        );
+    }
+
+    @Bean
+    public BookService bookService(){
+        return new DefaultBookService(
+                daoConfig.bookDao(),
+                converterConfig.bookConverter()
+        );
+    }
+
+    @Bean
+    public OrderService orderService(){
+        return new DefaultOrderService(
+                converterConfig.orderConverter(),
+                daoConfig.orderDao(),
+                converterConfig.authUserConverter(),
+                converterConfig.bookConverter(),
+                bookService()
+        );
+    }
+
+    @Bean
+    public UserService userService(){
+        return new DefaultUserService(
+                daoConfig.userDao(),
+                converterConfig.userConverter(),
+                converterConfig.authUserConverter()
+        );
     }
 }

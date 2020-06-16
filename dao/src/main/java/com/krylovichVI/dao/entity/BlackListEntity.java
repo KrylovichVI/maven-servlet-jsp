@@ -1,11 +1,9 @@
 package com.krylovichVI.dao.entity;
 
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 import java.sql.Date;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "black_list")
 public class BlackListEntity {

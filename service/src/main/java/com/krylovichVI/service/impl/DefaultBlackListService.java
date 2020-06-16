@@ -3,31 +3,28 @@ package com.krylovichVI.service.impl;
 import com.krylovichVI.dao.BlackListDao;
 import com.krylovichVI.dao.converters.AuthUserConverter;
 import com.krylovichVI.dao.converters.BlackListConverter;
+import com.krylovichVI.dao.entity.AuthUserEntity;
+import com.krylovichVI.dao.entity.BlackListEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.BlackList;
 import com.krylovichVI.service.BlackListService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
 public class DefaultBlackListService implements BlackListService {
 
     private BlackListDao blackListDao;
     private AuthUserConverter authUserConverter;
     private BlackListConverter blackListConverter;
 
-    @Autowired
     public DefaultBlackListService(BlackListDao blackListDao, AuthUserConverter authUserConverter, BlackListConverter blackListConverter){
         this.blackListDao = blackListDao;
         this.authUserConverter = authUserConverter;
         this.blackListConverter = blackListConverter;
     }
-
 
     @Transactional
     @Override
@@ -35,20 +32,27 @@ public class DefaultBlackListService implements BlackListService {
         boolean existUser = existUserInBlackList(authUser);
         if(!existUser){
             BlackList blackListOfCurrentUser = new BlackList(Date.valueOf(LocalDate.now()), null);
-            blackListDao.addUserInBlackList(authUserConverter.toEntity(authUser), blackListConverter.toEntity(blackListOfCurrentUser));
+
+            AuthUserEntity authUserEntity = authUserConverter.toEntity(authUser);
+            BlackListEntity blackListEntity = blackListConverter.toEntity(blackListOfCurrentUser);
+
+            blackListDao.addUserInBlackList(authUserEntity, blackListEntity);
         }
     }
 
     @Transactional
     @Override
     public void deleteUserOfBlackList(AuthUser authUser) {
-        blackListDao.deleteUserOfBlackList(blackListConverter.toEntity(authUser.getBlackList()));
+        BlackListEntity blackListEntity = blackListConverter.toEntity(authUser.getBlackList());
+        blackListDao.deleteUserOfBlackList(blackListEntity);
     }
 
     @Transactional
     @Override
     public boolean existUserInBlackList(AuthUser authUser) {
-        List<BlackList> usersOfBlackList = blackListConverter.toDto(blackListDao.getUsersOfBlackList());
+        List<BlackListEntity> usersOfBlackListEntity = blackListDao.getUsersOfBlackList();
+
+        List<BlackList> usersOfBlackList = blackListConverter.toDto(usersOfBlackListEntity);
         for(BlackList blackList : usersOfBlackList){
             if(blackList.getAuthUserId().equals(authUser.getId())){
                 return true;
