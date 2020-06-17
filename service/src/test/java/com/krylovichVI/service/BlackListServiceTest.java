@@ -29,32 +29,69 @@ import static org.mockito.Mockito.*;
 public class BlackListServiceTest {
     @Mock
     private BlackListDao blackListDao;
+    @Mock
+    private AuthUserConverter authUserConverter;
+    @Mock
+    private BlackListConverter blackListConverter;
 
     @InjectMocks
     private DefaultBlackListService blackListService;
 
     @Test
     void testAddUserInBlackList(){
+        AuthUserEntity authUserEntity = new AuthUserEntity("admin", "admin", Role.ADMIN, null);
+        BlackListEntity blackListEntity = new BlackListEntity(Date.valueOf(LocalDate.now()), null);
+
         AuthUser authUser = new AuthUser("admin", "admin", Role.ADMIN, null);
         BlackList blackList = new BlackList(Date.valueOf(LocalDate.now()), null);
-        doNothing().when(blackListDao).addUserInBlackList(authUser, blackList);
+
+        when(authUserConverter.toEntity(authUser)).thenReturn(authUserEntity);
+        when(blackListConverter.toEntity(blackList)).thenReturn(blackListEntity);
+        doNothing().when(blackListDao).addUserInBlackList(authUserEntity, blackListEntity);
 
         blackListService.addUserInBlackList(authUser);
 
-        verify(blackListDao, times(1)).addUserInBlackList(authUser, blackList);
+        verify(blackListDao, times(1)).addUserInBlackList(authUserEntity, blackListEntity);
     }
 
     @Test
     void testOfListUsers(){
-        List<BlackList> blackListDTOS = new ArrayList<>();
-        AuthUser authUserFirst = new AuthUser("admin1", "admin", Role.ADMIN, null);
-        AuthUser authUserSecond = new AuthUser("admin2", "admin", Role.ADMIN, null);
-        AuthUser authUserThread = new AuthUser("admin3", "admin", Role.ADMIN, null);
-        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserFirst));
-        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserSecond));
-        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserThread));
-        when(blackListDao.getUsersOfBlackList()).thenReturn(blackListDTOS);
+        List<BlackList> blackListDTOS = getBlackLists();
+        List<BlackListEntity> blackListEntity = getBlackListEntity();
+
+        when(blackListDao.getUsersOfBlackList()).thenReturn(blackListEntity);
+        when(blackListConverter.toDto(blackListEntity)).thenReturn(blackListDTOS);
         List<BlackList> usersOfBlackList = blackListService.getUsersOfBlackList();
         assertTrue(blackListDTOS.containsAll(usersOfBlackList));
+    }
+
+    private List<BlackList> getBlackLists() {
+        List<BlackList> blackListDTOS = new ArrayList<>();
+        AuthUser authUserFirst = new AuthUser("admin1", "admin", Role.ADMIN, null);
+        authUserFirst.setId(1L);
+        AuthUser authUserSecond = new AuthUser("admin2", "admin", Role.ADMIN, null);
+        authUserSecond.setId(2L);
+        AuthUser authUserThread = new AuthUser("admin3", "admin", Role.ADMIN, null);
+        authUserThread.setId(3L);
+
+        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserFirst.getId()));
+        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserSecond.getId()));
+        blackListDTOS.add(new BlackList(Date.valueOf(LocalDate.now()), authUserThread.getId()));
+        return blackListDTOS;
+    }
+
+    private List<BlackListEntity> getBlackListEntity(){
+        List<BlackListEntity> blackListEntities = new ArrayList<>();
+        AuthUserEntity authUserFirst = new AuthUserEntity("admin1", "admin", Role.ADMIN, null);
+        authUserFirst.setId(1L);
+        AuthUserEntity authUserSecond = new AuthUserEntity("admin2", "admin", Role.ADMIN, null);
+        authUserSecond.setId(2L);
+        AuthUserEntity authUserThread = new AuthUserEntity("admin3", "admin", Role.ADMIN, null);
+        authUserThread.setId(3L);
+
+        blackListEntities.add(new BlackListEntity(Date.valueOf(LocalDate.now()), authUserFirst));
+        blackListEntities.add(new BlackListEntity(Date.valueOf(LocalDate.now()), authUserSecond));
+        blackListEntities.add(new BlackListEntity(Date.valueOf(LocalDate.now()), authUserThread));
+        return blackListEntities;
     }
 }

@@ -67,8 +67,7 @@ public class DefaultOrderService implements OrderService {
     @Transactional
     @Override
     public void deleteOrder(Long orderId) {
-        Order order = orderConverter.toDto(orderDao.getOrderById(orderId));
-        orderDao.deleteOrder(orderConverter.toEntity(order));
+        orderDao.deleteOrder(orderDao.getOrderById(orderId));
     }
 
     @Transactional
