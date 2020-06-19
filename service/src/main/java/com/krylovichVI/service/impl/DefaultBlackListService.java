@@ -47,7 +47,7 @@ public class DefaultBlackListService implements BlackListService {
         blackListDao.deleteUserOfBlackList(blackListEntity);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public boolean existUserInBlackList(AuthUser authUser) {
         List<BlackListEntity> usersOfBlackListEntity = blackListDao.getUsersOfBlackList();
@@ -61,7 +61,7 @@ public class DefaultBlackListService implements BlackListService {
         return false;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<BlackList> getUsersOfBlackList() {
         return blackListConverter.toDto(blackListDao.getUsersOfBlackList());

@@ -21,7 +21,7 @@ public class DefaultBookService implements BookService {
         this.bookConverter = bookConverter;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getBooks() {
         return bookConverter.toDto(bookDao.getAllBooks());
@@ -40,7 +40,7 @@ public class DefaultBookService implements BookService {
         bookDao.deleteBook(bookById);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public long getCountOfPage() {
         long countOfRow = bookDao.getCountOfRow();
@@ -51,7 +51,7 @@ public class DefaultBookService implements BookService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getBooksByPage(int currentPage) {
         List<BookEntity> booksByPage = bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
@@ -64,13 +64,13 @@ public class DefaultBookService implements BookService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Book getBookById(Long bookId) {
         return bookConverter.toDto(bookDao.getBookById(bookId));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getListOfBookById(String[] bookId) {
         List<Book> bookList = new ArrayList<>();

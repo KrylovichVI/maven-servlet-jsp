@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>maven-servlet-jsp</artifactId>
+        <artifactId>Library</artifactId>
         <groupId>com.krylovichVI</groupId>
         <version>${project.version}</version>
     </parent>
@@ -17,7 +17,7 @@
 
     <properties>
         <spring-data-jpa.version>2.2.2.RELEASE</spring-data-jpa.version>
-        <spring-orm.version>${spring-context.version}</spring-orm.version>
+        <spring-orm.version>${spring.version}</spring-orm.version>
         <mysql-connector-java.version>8.0.19</mysql-connector-java.version>
         <hibernate-core.version>5.4.14.Final</hibernate-core.version>
         <ehcache-core.version>2.6.11</ehcache-core.version>

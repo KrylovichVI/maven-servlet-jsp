@@ -24,7 +24,7 @@ public class DefaultAuthUserService implements AuthUserService {
         this.userConverter = userConverter;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public AuthUser getByLogin(String login) {
         return authUserConverter.toDto(authUserDao.getByLogin(login));
@@ -41,7 +41,7 @@ public class DefaultAuthUserService implements AuthUserService {
         return authUserDao.saveAuthUser(authUserEntity, userEntity);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public AuthUser login(String username, String password) {
         final AuthUser userAuth = authUserConverter.toDto(authUserDao.getByLogin(username));
@@ -54,7 +54,7 @@ public class DefaultAuthUserService implements AuthUserService {
        return null;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<AuthUser> getUsers() {
         return authUserConverter.toDto(authUserDao.getUsers());

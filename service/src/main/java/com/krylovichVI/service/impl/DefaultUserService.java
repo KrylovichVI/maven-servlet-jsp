@@ -32,7 +32,7 @@ public class DefaultUserService implements UserService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public User getUserByAuthUser(AuthUser authUser) {
         return userConverter.toDto(userDao.getUserByAuthUser(authUserConverter.toEntity(authUser)));

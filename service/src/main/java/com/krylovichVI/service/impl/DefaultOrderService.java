@@ -33,7 +33,7 @@ public class DefaultOrderService implements OrderService {
         this.bookService = bookService;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Order> getOrdersOfUser(AuthUser authUser) {
         List<Order> orders = orderConverter.toDto(orderDao.getOrders());
@@ -84,13 +84,13 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Order getOrderById(Long id) {
         return orderConverter.toDto(orderDao.getOrderById(id));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getBookByOrder() {
         List<Book> bookByOrder = bookConverter.toDto(orderDao.getBookByOrder());
@@ -102,7 +102,7 @@ public class DefaultOrderService implements OrderService {
         return allBooks;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Order> getOrderByPage(int currentPage) {
         List<OrderEntity> listOrderByPage = orderDao.getListOrderByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
@@ -114,7 +114,7 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public long getCountOfPage() {
         long countOfRow = orderDao.getCountOfRow();
