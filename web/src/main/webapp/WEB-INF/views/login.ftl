@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-<form action="${pageContext.request.contextPath}/login" method="post">
+<form action="/login" method="post">
     <div class="form-group ml-4">
         <h3>Login</h3>
         <div class="form-group col-md-2">
@@ -14,6 +14,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Log In</button>
     </div>
-    <p style="color: red">${error}</p>
+<#--    <p style="color: red">${error}</p>-->
 </form>
 </@c.page>

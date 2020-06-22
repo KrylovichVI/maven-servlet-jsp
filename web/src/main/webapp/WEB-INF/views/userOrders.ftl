@@ -29,7 +29,7 @@
         </#list>
         </tbody>
     </table>
-    <form action="${pageContext.request.contextPath}/userOrders" method="post">
+    <form action="/userOrders" method="post">
         <div class="form-group ml-4">
             <h3>Create order</h3>
             <div class="form-group col-md-2">

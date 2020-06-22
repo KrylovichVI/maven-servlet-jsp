@@ -1,7 +1,7 @@
-//package com.krylovichVI.controller.servlets;
+//package com.krylovichVI.controller.controllers;
 //
-//import com.krylovichVI.service.OrderService;
-//import com.krylovichVI.service.impl.DefaultOrderService;
+//import com.krylovichVI.service.BookService;
+//import com.krylovichVI.service.impl.DefaultBookService;
 //import com.krylovichVI.controller.WebUtils;
 //
 //import javax.servlet.ServletConfig;
@@ -13,29 +13,24 @@
 //import java.io.IOException;
 //import java.util.Enumeration;
 //
-//@WebServlet(name = "deleteOrderServlet", urlPatterns = "/deleteOrderServlet")
-//public class DeleteOrderServlet extends HttpServlet {
-//    private OrderService userService;
+//@WebServlet(name = "deleteBook", urlPatterns = "/deleteBook")
+//public class DeleteBookServlet extends HttpServlet {
+//    private BookService bookService;
 //
 //    @Override
 //    public void init(ServletConfig config) throws ServletException {
 //        super.init(config);
-//        userService = DefaultOrderService.getInstance();
+//        bookService = DefaultBookService.getInstance();
 //    }
 //
 //    @Override
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Long orderId = getLongOrderId(req);
-//        userService.deleteOrder(orderId);
-//        WebUtils.sendRedirect("/adminOrders", req, resp);
-//    }
-//
-//    private Long getLongOrderId(HttpServletRequest req) {
 //        Enumeration<String> parameterNames = req.getParameterNames();
-//        Long orderId = null;
+//        Long bookId = null;
 //        if(parameterNames.hasMoreElements()){
-//           orderId =  Long.parseLong(parameterNames.nextElement());
+//            bookId =  Long.parseLong(parameterNames.nextElement());
 //        }
-//        return orderId;
+//        bookService.deleteBook(bookId);
+//        WebUtils.sendRedirect("page", req, resp);
 //    }
 //}

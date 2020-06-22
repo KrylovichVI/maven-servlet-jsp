@@ -22,6 +22,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.krylovichVI.dao</groupId>
+            <artifactId>dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.krylovichVI.service</groupId>
             <artifactId>service</artifactId>
             <version>${project.version}</version>
@@ -29,6 +34,8 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -41,11 +48,15 @@
             <version>${freemarker.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.krylovichVI.dao</groupId>
-            <artifactId>dao</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!--        <dependency>-->
 <!--            <groupId>jstl</groupId>-->
 <!--            <artifactId>jstl</artifactId>-->
@@ -67,7 +78,7 @@
                 <configuration>
                     <server>myTomcatServer</server>
                     <url>http://localhost:8080/manager/text</url>
-                    <path>/myapp</path>
+                    <path>/</path>
                 </configuration>
             </plugin>
         </plugins>

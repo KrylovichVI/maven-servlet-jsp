@@ -20,6 +20,11 @@ public class ServiceConfig {
     }
 
     @Bean
+    public SecurityService securityService(){
+        return new DefaultSecurityService(daoConfig.authUserDao(), converterConfig.authUserConverter());
+    }
+
+    @Bean
     public AuthUserService authUserService(){
         return new DefaultAuthUserService(
                 daoConfig.authUserDao(),

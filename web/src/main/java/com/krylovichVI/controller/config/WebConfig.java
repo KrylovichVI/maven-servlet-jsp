@@ -1,10 +1,9 @@
 package com.krylovichVI.controller.config;
 
-import com.krylovichVI.controller.servlets.StartController;
+import com.krylovichVI.controller.controllers.*;
 import com.krylovichVI.service.config.ServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.krylovichVI.controller.*")
 public class WebConfig implements WebMvcConfigurer {
     private ServiceConfig serviceConfig;
 
@@ -27,6 +25,32 @@ public class WebConfig implements WebMvcConfigurer {
     public StartController startController(){
         return new StartController();
     }
+
+    @Bean
+    public LoginController loginController(){ return new LoginController(
+            serviceConfig.authUserService(),
+            serviceConfig.blackListService(),
+            serviceConfig.securityService());
+    }
+
+    @Bean
+    public PageController pageController(){ return new PageController(serviceConfig.bookService());}
+
+    @Bean
+    public UserSettingsController userSettingsController(){ return new UserSettingsController(serviceConfig.userService());}
+
+    @Bean
+    public UserListController userListController(){
+        return new UserListController(serviceConfig.authUserService(), serviceConfig.blackListService());
+    }
+
+    @Bean
+    public BlackListController blackListController(){
+        return new BlackListController(serviceConfig.authUserService(), serviceConfig.blackListService());
+    }
+
+    @Bean
+    public RegistrationController registrationController(){ return new RegistrationController(serviceConfig.authUserService());}
 
     @Bean
     public ViewResolver freemarkerViewResolver(){

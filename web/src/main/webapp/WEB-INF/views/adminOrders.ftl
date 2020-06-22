@@ -31,7 +31,7 @@
                 </td>
                 <td>${user.status}</td>
                 <td>
-                    <form action="${pageContext.request.contextPath}/deleteOrderServlet" method="post" >
+                    <form action="/deleteOrderServlet" method="post" >
                         <button type="submit" class="btn btn-primary" name="${user.id}">Delete</button>
                     </form>
                 </td>
@@ -48,7 +48,7 @@
                         </li>
                 <#else>
                     <li class="page-item">
-                        <a class="page-link" href="${pageContext.request.contextPath}/adminOrders?page=${currentPage - 1}">Previous</a>
+                        <a class="page-link" href="/adminOrders?page=${currentPage - 1}">Previous</a>
                     </li>
                 </#if>
                 <#list 1..countPage as pgs>
@@ -58,7 +58,7 @@
                             </li>
                         <#else >
                             <li class="page-item">
-                                <a  href="${pageContext.request.contextPath}/adminOrders?page=${pgs}" class="page-link">${pgs}</a>
+                                <a  href="/adminOrders?page=${pgs}" class="page-link">${pgs}</a>
                             </li>
                         </#if>
                 </#list>
@@ -68,13 +68,13 @@
                     </li>
                 <#else>
                     <li class="page-item">
-                        <a href="${pageContext.request.contextPath}/adminOrders?page=${currentPage + 1}" class="page-link">Next</a>
+                        <a href="/adminOrders?page=${currentPage + 1}" class="page-link">Next</a>
                     </li>
                 </#if>
             </ul>
         </nav>
     </div>
-    <form action="${pageContext.request.contextPath}/adminOrders" method="post">
+    <form action="/adminOrders" method="post">
         <div class="form-group ml-4">
             <h3>Update Status Order</h3>
             <div class="form-group col-md-2">

@@ -20,7 +20,7 @@
         </#list>
         </tbody>
     </table>
-    <form action="${pageContext.request.contextPath}/userList" method="post">
+    <form action="/userList" method="post">
         <div class="row">
             <div class="col ml-2">
                 <label for="usrName">Username: </label>

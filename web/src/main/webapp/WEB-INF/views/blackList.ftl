@@ -21,7 +21,7 @@
         </tbody>
     </table>
 
-    <form action="${pageContext.request.contextPath}/blackList" method="post">
+    <form action="/blackList" method="post">
         <div class="row">
             <div class="container">
                 <div class="col ml-2">

@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    <form action="${pageContext.request.contextPath}/registration" method="post">
+    <form action="/registration" method="post">
         <h3>Registration</h3>
         <div class="form-group row ml-4">
             <label for="login-reg" class="mt-2">User Name: </label>

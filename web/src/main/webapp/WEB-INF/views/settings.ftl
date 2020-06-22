@@ -4,13 +4,13 @@
     <h3>User info</h3>
     <div class="container ml-4">
         <label>First Name: </label>
-        <p class="font-weight-bold">${userInf.firstName}"</p>
+        <p class="font-weight-bold">${userInfo.firstName}"</p>
         <label>Last Name: </label>
-        <p class="font-weight-bolder">${userInf.lastName}</p>
+        <p class="font-weight-bolder">${userInfo.lastName}</p>
         <label>Phone: </label>
-        <p class="font-weight-normal">${userInf.userInfo.phone}</p>
+        <p class="font-weight-normal">${userInfo.phone}</p>
         <label>Email: </label>
-        <p class="font-weight-light">${userInf.userInfo.email}</p>
+        <p class="font-weight-light">${userInfo.email}</p>
         <label>Username: </label>
         <p class="font-weight-bold">${authUser.username}</p>
         <label>Role: </label>
@@ -18,7 +18,7 @@
         <br>
     </div>
 
-    <form action="${pageContext.request.contextPath}/settings" method="post">
+    <form action="/settings" method="post">
         <div class="form-group ml-4">
             <div class="form-group col-md-2">
                 <label for="firstName">First Name</label>
