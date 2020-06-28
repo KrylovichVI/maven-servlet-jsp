@@ -32,4 +32,8 @@ public class AuthUser {
         this.id = id;
         this.blackList = blackList;
     }
+
+    public boolean isAdmin(){
+        return role.equals(Role.ADMIN) ? true : false;
+    }
 }

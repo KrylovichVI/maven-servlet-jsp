@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-//@AllArgsConstructor
 @Entity
 @Table(name = "orders")
 public class OrderEntity {

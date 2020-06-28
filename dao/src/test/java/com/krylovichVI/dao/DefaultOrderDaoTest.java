@@ -104,7 +104,7 @@ public class DefaultOrderDaoTest {
     void testAddFailOrder(){
         OrderEntity testOrder = new OrderEntity(null, null, null, null);
 
-        Throwable thrown = assertThrows(NullPointerException.class, () -> {
+        Throwable thrown = assertThrows(IllegalArgumentException.class, () -> {
             orderDao.addOrder(null, testOrder, Collections.emptyList());
         });
         assertNotNull(thrown);

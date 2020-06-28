@@ -35,6 +35,7 @@ public class DefaultBlackListDao implements BlackListDao {
     @Override
     public void deleteUserOfBlackList(BlackListEntity blackList) {
         Session session = factory.getCurrentSession();
+        session.clear();
         session.delete(blackList);
         session.flush();
         logger.info("black list {} delete ", blackList.getId());

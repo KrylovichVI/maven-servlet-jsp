@@ -1,9 +1,10 @@
 package com.krylovichVI.controller.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-//@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class EncodingFilter implements Filter {
     private static final String UTF_8 = "UTF-8";
 

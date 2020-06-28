@@ -5,7 +5,6 @@ import com.krylovichVI.dao.entity.AuthUserEntity;
 import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.pojo.Page;
-import org.hibernate.LockMode;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,12 +33,12 @@ public class DefaultOrderDao extends DefaultPageDao<OrderEntity> implements Orde
     public long addOrder(AuthUserEntity authUser, OrderEntity order, List<BookEntity> book) {
         try{
             Session session = sessionFactory.getCurrentSession();
-            session.lock(authUser, LockMode.UPGRADE_NOWAIT);
+            session.refresh(authUser);
             authUser.getOrderList().add(order);
             order.getBookSet().addAll(book);
             long id = (Long) session.save(order);
             for(BookEntity myBook : book){
-                session.lock(myBook, LockMode.UPGRADE_NOWAIT);
+                session.refresh(myBook);
                 myBook.getOrderList().add(order);
             }
             logger.info("order {} add ", order.getAuthUser().getUsername(), order.getName());
@@ -61,7 +60,9 @@ public class DefaultOrderDao extends DefaultPageDao<OrderEntity> implements Orde
     @Override
     public void updateStatusOrder(OrderEntity order) {
         try{
-            sessionFactory.getCurrentSession().update(order);
+            Session session = sessionFactory.getCurrentSession();
+            session.clear();
+            session.update(order);
             logger.info("order {} update ", order.getId(), order.getStatus());
         } catch (NonUniqueObjectException e) {
             logger.error("order {} error update ", order, order.getStatus(), e);
@@ -83,7 +84,7 @@ public class DefaultOrderDao extends DefaultPageDao<OrderEntity> implements Orde
 
     @Override
     public List<BookEntity> getBookByOrder() {
-        String sql = "Select b.id as id, b.name as name, b.author as author  from books as b " +
+        String sql = "Select b.id as id, b.name as name, b.author as author, b.filename as filename  from books as b " +
                 "inner join order_book as ob on  b.id = ob.bookId " +
                 "inner join orders as o on o.id = ob.orderId where o.status ='IN_PROCESSING'";
         List<BookEntity> resultList = sessionFactory.getCurrentSession().createNativeQuery(sql, BookEntity.class).getResultList();

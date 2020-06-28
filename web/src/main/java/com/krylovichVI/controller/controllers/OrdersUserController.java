@@ -7,18 +7,20 @@ import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.BookService;
 import com.krylovichVI.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@WebServlet(name = "ordersUserServlet", urlPatterns = "/userOrders")
 @Controller
 @RequestMapping("/userOrders")
+@PreAuthorize("hasAuthority('USER')")
 public class OrdersUserController {
     private AuthUserService authUserService;
     private OrderService orderService;
@@ -31,24 +33,23 @@ public class OrdersUserController {
         this.bookService = bookService;
     }
 
-
     @GetMapping
-    public String getUserOrders(HttpServletRequest req){
-        AuthUser authUser = (AuthUser) req.getSession().getAttribute("authUser");
+    public String getUserOrders(@AuthenticationPrincipal AuthUser authUser, Model model){
         List<Order> userOrders = orderService.getOrdersOfUser(authUser);
         List<Book> bookList = orderService.getBookByOrder();
-        req.setAttribute("userOrders", userOrders);
-        req.setAttribute("bookList", bookList);
+        model.addAttribute("userOrders", userOrders);
+        model.addAttribute("bookList", bookList);
 
         return "userOrders";
     }
 
     @PostMapping
-    public String addOrder(HttpServletRequest req){
-        String orderName = req.getParameter("orderName");
-        List<Book> books = bookService.getListOfBookById(req.getParameterValues("bookId"));
-
-        AuthUser authUser = (AuthUser) req.getSession().getAttribute("authUser");
+    public String addOrder(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestParam String orderName,
+            @RequestParam String[] bookId
+            ){
+        List<Book> books = bookService.getListOfBookById(bookId);
         orderService.addOrder(orderName, authUser, books);
 
         return "redirect:/userOrders";

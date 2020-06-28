@@ -37,7 +37,9 @@ public class UserConverter implements AbstractConverter<UserEntity, User> {
 
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setAuthUser(authUserRepo.findById(user.getAuthUserId()).orElse(null));
+        if(user.getAuthUserId() != null){
+            userEntity.setAuthUser(authUserRepo.findById(user.getAuthUserId()).orElse(null));
+        }
         userEntity.setId(user.getId());
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());

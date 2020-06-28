@@ -37,8 +37,12 @@ public class BlackListConverter implements AbstractConverter<BlackListEntity, Bl
 
         BlackListEntity blackListEntity = new BlackListEntity();
 
-        blackListEntity.setAuthUser(authUserRepo.findById(blackList.getAuthUserId()).orElse(null));
-        blackListEntity.setId(blackList.getId());
+        if(blackList.getAuthUserId() != null){
+            blackListEntity.setAuthUser(authUserRepo.findById(blackList.getAuthUserId()).orElse(null));
+        }
+        if(blackList.getId() != null){
+            blackListEntity.setId(blackList.getId());
+        }
         blackListEntity.setDateBlock(blackList.getDateBlock());
 
         return blackListEntity;

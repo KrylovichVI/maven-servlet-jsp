@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//@AllArgsConstructor
 @Entity
 @Table(name = "books")
 public class BookEntity {
@@ -15,6 +14,8 @@ public class BookEntity {
     private String bookName;
     @Column(name = "author", nullable = false)
     private String author;
+    @Column(name = "filename")
+    private String filename;
 
     @ManyToMany(mappedBy = "bookSet")
     private List<OrderEntity> orderList = new ArrayList<>();
@@ -57,5 +58,13 @@ public class BookEntity {
 
     public void setOrderList(List<OrderEntity> orderList) {
         this.orderList = orderList;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

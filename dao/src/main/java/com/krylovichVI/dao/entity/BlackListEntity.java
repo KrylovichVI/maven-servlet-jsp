@@ -3,15 +3,14 @@ package com.krylovichVI.dao.entity;
 import javax.persistence.*;
 import java.sql.Date;
 
-//@AllArgsConstructor
 @Entity
 @Table(name = "black_list")
-public class BlackListEntity {
+public class BlackListEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST} )
     @JoinColumn(name = "authUser_Id", unique = true, nullable = false)
     private AuthUserEntity authUser;
 

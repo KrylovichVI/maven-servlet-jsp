@@ -3,13 +3,11 @@ package com.krylovichVI.dao.imp;
 import com.krylovichVI.dao.AuthUserDao;
 import com.krylovichVI.dao.entity.AuthUserEntity;
 import com.krylovichVI.dao.entity.UserEntity;
-import com.krylovichVI.pojo.AuthUser;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 import javax.persistence.NoResultException;
 import java.util.List;
@@ -63,9 +61,6 @@ public class DefaultAuthUserDao implements AuthUserDao {
         try {
             AuthUserEntity authUser = factory.getCurrentSession().get(AuthUserEntity.class, id);
             logger.info("auth_user save: ", authUser.getUsername(), authUser.getPassword(), authUser.getRole().name());
-            AuthUser authUser1 = new AuthUser();
-            BeanUtils.copyProperties(authUser,authUser1);
-            System.out.println(authUser1);
             return authUser;
         } catch(NoResultException e){
             logger.error("auth_user is not consist: ", id);

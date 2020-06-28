@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{
@@ -20,6 +21,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected Class<?>[] getServletConfigClasses() {
         return new Class[]{
                 WebConfig.class,
+                ControllerConfig.class,
                 ServiceConfig.class,
                 DaoConfig.class
         };

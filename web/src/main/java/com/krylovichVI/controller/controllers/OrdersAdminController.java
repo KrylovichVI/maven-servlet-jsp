@@ -3,20 +3,19 @@ package com.krylovichVI.controller.controllers;
 import com.krylovichVI.pojo.Order;
 import com.krylovichVI.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 @RequestMapping("/adminOrders")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class OrdersAdminController {
     private OrderService orderService;
-    private final int FIRST_PAGE = 1;
 
     @Autowired
     public OrdersAdminController(OrderService orderService) {
@@ -25,17 +24,11 @@ public class OrdersAdminController {
 
 
     @GetMapping
-    public String getAllOrders(@RequestParam(defaultValue = "1") String page, HttpServletRequest req){
-        Integer currentPage = Integer.valueOf(page);
-
-        Boolean idError = (Boolean) req.getSession().getAttribute("idError");
-        req.getSession().removeAttribute("idError");
-
-        List<Order> usersOrders = orderService.getOrderByPage(currentPage);
-        req.setAttribute("countPage", orderService.getCountOfPage());
-        req.setAttribute("currentPage", currentPage);
-        req.setAttribute("usersOrders", usersOrders);
-        req.setAttribute("idError", idError);
+    public String getAllOrders(@RequestParam(defaultValue = "1") Integer page, Model model){
+        List<Order> usersOrders = orderService.getOrderByPage(page);
+        model.addAttribute("countPage", orderService.getCountOfPage());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("usersOrders", usersOrders);
         return "adminOrders";
     }
 
@@ -47,6 +40,13 @@ public class OrdersAdminController {
         if(orderService.updateStatusOrder(idName, status) == -1L) {
             req.getSession().setAttribute("idError", true);
         }
+
+        return "redirect:/adminOrders";
+    }
+
+    @PostMapping("{orderId}")
+    public String deleteOrderById(@PathVariable("orderId") Long orderId){
+        orderService.deleteOrder(orderId);
 
         return "redirect:/adminOrders";
     }

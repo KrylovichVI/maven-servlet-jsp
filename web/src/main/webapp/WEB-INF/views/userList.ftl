@@ -8,6 +8,7 @@
             <th scope="col">Username</th>
             <th scope="col">Password</th>
             <th scope="col">Role</th>
+            <th scope="col">Black List</th>
         </tr>
         </thead>
         <tbody>
@@ -16,21 +17,18 @@
                 <td>${user.username}</td>
                 <td>${user.password}</td>
                 <td>${user.role}</td>
+                <td>
+                    <form action="/userList/${user.username}" method="post">
+                        <#if user.blackList??>
+                            ${containsInBlackList}
+                        <#else>
+                            <button class="btn btn-primary" name="${user.username}">Add in black list</button>
+                        </#if>
+                    </form>
+                </td>
             </tr>
         </#list>
         </tbody>
     </table>
-    <form action="/userList" method="post">
-        <div class="row">
-            <div class="col ml-2">
-                <label for="usrName">Username: </label>
-                <input id="usrName" class="form-control" name="usrName" type="text" placeholder="User of black list">
-            </div>
-            <div class="col ml-2 my-4">
-                <button type="submit" class="btn btn-primary" >Add in black list</button>
-            </div>
-        </div>
-        <p style="color: red">${errorUserList}</p>
-    </form>
 </@c.page>
 

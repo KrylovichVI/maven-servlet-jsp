@@ -4,7 +4,7 @@ import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.User;
 import com.krylovichVI.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,22 +23,22 @@ public class UserSettingsController{
     }
 
     @GetMapping
-    public String getUserSettings(UsernamePasswordAuthenticationToken authUser, Model model){
+    public String getUserSettings(@AuthenticationPrincipal AuthUser authUser, Model model){
 
-        model.addAttribute("userInfo", userService.getUserByAuthUser((AuthUser) authUser.getPrincipal()));
+        model.addAttribute("userInfo", userService.getUserByAuthUser(authUser));
         model.addAttribute("authUser", authUser);
         return "settings";
     }
 
     @PostMapping
     public String updateUserSettings(
-            UsernamePasswordAuthenticationToken authUser,
+            @AuthenticationPrincipal AuthUser authUser,
             @RequestParam String firstName,
             @RequestParam String lastName,
             @RequestParam String phone,
             @RequestParam String email
                                      ){
-        User user = getUserInfo((AuthUser) authUser.getPrincipal(), firstName, lastName, phone, email);
+        User user = getUserInfo(authUser, firstName, lastName, phone, email);
         userService.updateUserInfo(user);
         return "redirect:/settings";
     }

@@ -2,7 +2,6 @@ package com.krylovichVI.dao.entity;
 
 import javax.persistence.*;
 
-//@AllArgsConstructor
 //@Cacheable
 @Entity
 @Table(name = "user")

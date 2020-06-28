@@ -7,7 +7,7 @@
         <tr>
             <th scope="col">Id_Order</th>
             <th scope="col">Order name</th>
-            <th scope="col">Username</th>
+<#--            <th scope="col">Username</th>-->
             <th scope="col">Data open order</th>
             <th scope="col">Data update Status</th>
             <th scope="col">Order books</th>
@@ -20,9 +20,9 @@
             <tr>
                 <td>${user.id}</td>
                 <td>${user.name}</td>
-                <td>${user.authUser.username}</td>
+<#--                <td>${user.authUser.username}</td>-->
                 <td>${user.dateCreate}</td>
-                <td>${user.dateUpdate}</td>
+                <td><#if user.dateUpdate??>${user.dateUpdate}<#else>-</#if></td>
                 <td>
                     <#list user.bookSet as book>
                         ${book.bookName}
@@ -31,7 +31,7 @@
                 </td>
                 <td>${user.status}</td>
                 <td>
-                    <form action="/deleteOrderServlet" method="post" >
+                    <form action="/adminOrders/${user.id}" method="post" >
                         <button type="submit" class="btn btn-primary" name="${user.id}">Delete</button>
                     </form>
                 </td>
@@ -52,7 +52,7 @@
                     </li>
                 </#if>
                 <#list 1..countPage as pgs>
-                        <#if currentPage != null && currentPage == pgs>
+                        <#if currentPage?? && currentPage == pgs>
                             <li class="page-item active" aria-current="page">
                                 <span class="page-link">${pgs}<span class="sr-only">(current)</span></span>
                             </li>
@@ -62,7 +62,7 @@
                             </li>
                         </#if>
                 </#list>
-                <#if currentPage >= countPage>
+                <#if currentPage gte countPage>
                     <li class="page-item disabled">
                         <span class="page-link" >Next</span>
                     </li>

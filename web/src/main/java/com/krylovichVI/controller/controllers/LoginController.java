@@ -40,7 +40,7 @@ public class LoginController {
         if(authentication == null || "anonymousUser".equals(authentication.getPrincipal())){
             return "login";
         }
-        return "redirect:/page";
+        return "redirect:/book";
     }
 
     @PostMapping
@@ -56,7 +56,7 @@ public class LoginController {
             }
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, getAuthorities(user));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return "redirect:/page";
+            return "redirect:/book";
 
         }
     }

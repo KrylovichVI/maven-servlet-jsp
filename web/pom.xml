@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <freemarker.version>2.3.23</freemarker.version>
-    </properties>
+
     <parent>
-    <artifactId>Library</artifactId>
-    <groupId>com.krylovichVI</groupId>
-    <version>${project.version}</version>
-  </parent>
+        <artifactId>Library</artifactId>
+        <groupId>com.krylovichVI</groupId>
+        <version>${project.version}</version>
+    </parent>
 
     <groupId>com.krylovichVI.web</groupId>
     <artifactId>web</artifactId>
     <version>${project.version}</version>
     <packaging>war</packaging>
+
+    <properties>
+        <freemarker.version>2.3.30</freemarker.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -57,10 +59,17 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!--        <dependency>-->
-<!--            <groupId>jstl</groupId>-->
-<!--            <artifactId>jstl</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>

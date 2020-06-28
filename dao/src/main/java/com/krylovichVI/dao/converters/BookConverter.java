@@ -27,6 +27,9 @@ public class BookConverter implements AbstractConverter<BookEntity, Book> {
         book.setId(bookEntity.getId());
         book.setBookName(bookEntity.getBookName());
         book.setAuthor(bookEntity.getAuthor());
+        if(bookEntity.getFilename() != null && !bookEntity.getFilename().isEmpty()){
+            book.setFilename(bookEntity.getFilename());
+        }
 
         return book;
     }
@@ -56,6 +59,9 @@ public class BookConverter implements AbstractConverter<BookEntity, Book> {
         bookEntity.setId(book.getId());
         bookEntity.setBookName(book.getBookName());
         bookEntity.setAuthor(book.getAuthor());
+        if(book.getFilename() != null && !book.getFilename().isEmpty()){
+            bookEntity.setFilename(book.getFilename());
+        }
 
         return bookEntity;
     }

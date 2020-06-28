@@ -15,6 +15,7 @@ public class Book {
     private String bookName;
     private String author;
     private List<Long> orderIdList = new ArrayList<>();
+    private String filename;
 
     public Book(String bookName, String author){
         this.bookName = bookName;

@@ -4,7 +4,7 @@
     <h3>User info</h3>
     <div class="container ml-4">
         <label>First Name: </label>
-        <p class="font-weight-bold">${userInfo.firstName}"</p>
+        <p class="font-weight-bold">${userInfo.firstName}</p>
         <label>Last Name: </label>
         <p class="font-weight-bolder">${userInfo.lastName}</p>
         <label>Phone: </label>

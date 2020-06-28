@@ -11,4 +11,6 @@ public interface AuthUserService {
     AuthUser login(String username, String password);
 
     List<AuthUser> getUsers();
+
+    AuthUser getById(Long authUserId);
 }

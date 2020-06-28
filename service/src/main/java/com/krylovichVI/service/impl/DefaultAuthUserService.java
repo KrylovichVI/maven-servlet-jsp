@@ -59,4 +59,11 @@ public class DefaultAuthUserService implements AuthUserService {
     public List<AuthUser> getUsers() {
         return authUserConverter.toDto(authUserDao.getUsers());
     }
+
+
+    @Transactional
+    @Override
+    public AuthUser getById(Long authUserId) {
+        return authUserConverter.toDto(authUserDao.getById(authUserId));
+    }
 }
