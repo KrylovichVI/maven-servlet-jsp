@@ -35,7 +35,7 @@ public class HibernateConfig {
         return hikariDataSource;
     }
 
-    @Bean
+    @Bean(destroyMethod = "destroy")
     public LocalSessionFactoryBean entityManagerFactory(){
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(dataSource());

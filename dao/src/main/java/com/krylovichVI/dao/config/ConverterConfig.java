@@ -2,6 +2,7 @@ package com.krylovichVI.dao.config;
 
 import com.krylovichVI.dao.converters.*;
 import com.krylovichVI.dao.repository.AuthUserRepo;
+import com.krylovichVI.dao.repository.BookRepo;
 import com.krylovichVI.dao.repository.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ public class ConverterConfig {
     public AuthUserRepo authUserRepo;
     @Autowired
     public OrderRepo orderRepo;
+    @Autowired
+    public BookRepo bookRepo;
 
     @Bean
     public AuthUserConverter authUserConverter(){

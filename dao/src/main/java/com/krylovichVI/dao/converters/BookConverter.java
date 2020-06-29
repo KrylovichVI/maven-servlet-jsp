@@ -5,6 +5,8 @@ import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.dao.repository.OrderRepo;
 import com.krylovichVI.pojo.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -90,5 +92,19 @@ public class BookConverter implements AbstractConverter<BookEntity, Book> {
         }
 
         return list;
+    }
+
+    public Page<Book> toDto(Page<BookEntity> bookEntityPage){
+        if(bookEntityPage == null){
+            return null;
+        }
+        List<Book> bookDto = new ArrayList<>();
+        List<BookEntity> content = bookEntityPage.getContent();
+        for(BookEntity element : content){
+            bookDto.add(toDto(element));
+        }
+        Page<Book> bookPage = new PageImpl(bookDto, bookEntityPage.getPageable(), bookEntityPage.getTotalElements());
+
+        return bookPage;
     }
 }

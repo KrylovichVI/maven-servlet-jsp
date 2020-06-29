@@ -16,7 +16,6 @@
     <name>dao</name>
 
     <properties>
-        <spring-data-jpa.version>2.2.2.RELEASE</spring-data-jpa.version>
         <spring-orm.version>${spring.version}</spring-orm.version>
         <mysql-connector-java.version>8.0.19</mysql-connector-java.version>
         <hibernate-core.version>5.4.14.Final</hibernate-core.version>
@@ -59,11 +58,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring-orm.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring-data-jpa.version}</version>
         </dependency>
     </dependencies>
 

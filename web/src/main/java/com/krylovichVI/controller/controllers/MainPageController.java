@@ -35,7 +35,9 @@ public class MainPageController {
 
         model.addAttribute("booksList", books);
         model.addAttribute("countPage", bookService.getCountOfPage());
+        model.addAttribute("url", "/book");
         model.addAttribute("currentPage", page);
+
         return "mainPage";
     }
 

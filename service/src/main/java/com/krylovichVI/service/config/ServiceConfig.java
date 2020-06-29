@@ -69,4 +69,12 @@ public class ServiceConfig {
                 converterConfig.authUserConverter()
         );
     }
+
+    @Bean
+    public SearchService searchService(){
+        return new DefaultSearchService(
+                converterConfig.bookRepo,
+                converterConfig.bookConverter()
+        );
+    }
 }

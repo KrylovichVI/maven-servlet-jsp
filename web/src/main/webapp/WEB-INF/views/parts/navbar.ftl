@@ -30,6 +30,12 @@
                     <a class="nav-link" href="/userOrders"><@spring.message "navbar.orders"/></a>
                 </li>
             </#if>
+
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search"><@spring.message "navbar.search"/></a>
+                </li>
+            </#if>
             <#if user?? && isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/userList"><@spring.message "navbar.userList"/></a>

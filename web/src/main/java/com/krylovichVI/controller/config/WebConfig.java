@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer {
     @Value("D:/IT_Academy/Library/uploads")
     private String uploadPath;
@@ -37,6 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver freemarkerViewResolver(){
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
+        viewResolver.setContentType("text/html; charset=utf-8");
         viewResolver.setCache(true);
         viewResolver.setPrefix("");
         viewResolver.setSuffix(".ftl");

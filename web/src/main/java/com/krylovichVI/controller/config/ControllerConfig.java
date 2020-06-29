@@ -70,6 +70,7 @@ public class ControllerConfig {
     @Bean
     public UserSettingsController userSettingsController(){ return new UserSettingsController(serviceConfig.userService());}
 
-
+    @Bean
+    public SearchController searchController(){ return new SearchController(serviceConfig.searchService());}
 
 }
