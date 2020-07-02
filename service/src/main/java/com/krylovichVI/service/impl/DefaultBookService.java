@@ -6,6 +6,7 @@ import com.krylovichVI.dao.entity.BookEntity;
 import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Page;
 import com.krylovichVI.service.BookService;
+import com.krylovichVI.service.utils.ConvertImageUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -57,8 +58,10 @@ public class DefaultBookService implements BookService {
         List<BookEntity> booksByPage = bookDao.getBooksByPage(new Page(currentPage, MAX_ELEMENT_OF_PAGE));
 
         List<Book> books = bookConverter.toDto(booksByPage);
-        if(!books.isEmpty()){
-            return books;
+
+        List<Book> bookList = convertFilePathInBase64(books);
+        if(!bookList.isEmpty()){
+            return bookList;
         } else {
             return null;
         }
@@ -79,5 +82,14 @@ public class DefaultBookService implements BookService {
             bookList.add(bookConverter.toDto(bookById));
         }
         return bookList;
+    }
+
+
+    private List<Book> convertFilePathInBase64(List<Book> books) {
+        if(books == null){
+            return null;
+        }
+
+        return ConvertImageUtils.convertFilePathInBase64(books);
     }
 }

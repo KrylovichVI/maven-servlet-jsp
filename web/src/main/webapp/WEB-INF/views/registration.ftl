@@ -17,7 +17,7 @@
         </div>
         <div class="form-group row ml-4">
             <label for="role">Role: </label>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select id="role" class="form-control" name="role">
                     <option id="admin" name="admin">ADMIN</option>
                     <option selected id="user" name="user">USER</option>

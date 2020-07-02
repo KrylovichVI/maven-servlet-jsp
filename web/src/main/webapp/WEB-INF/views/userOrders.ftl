@@ -43,6 +43,9 @@
                         <option value="${book.id}">${book.bookName}</option>
                     </#list>
                 </select>
+                <#if error??>
+                    <p style="color: red">${error}</p>
+                </#if>
             </div>
             <br>
             <button type="submit" class=" form-group btn btn-primary mt-2">Add order</button>

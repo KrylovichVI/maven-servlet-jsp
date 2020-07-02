@@ -9,7 +9,7 @@
         <tr>
             <th scope="col">Id_Order</th>
             <th scope="col">Order name</th>
-<#--            <th scope="col">Username</th>-->
+            <th scope="col">Username</th>
             <th scope="col">Data open order</th>
             <th scope="col">Data update Status</th>
             <th scope="col">Order books</th>
@@ -20,21 +20,21 @@
         <tbody>
         <#list usersOrders as user>
             <tr>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-<#--                <td>${user.authUser.username}</td>-->
-                <td>${user.dateCreate}</td>
-                <td><#if user.dateUpdate??>${user.dateUpdate}<#else>-</#if></td>
+                <td>${user.order.id}</td>
+                <td>${user.order.name}</td>
+                <td>${user.username}</td>
+                <td>${user.order.dateCreate}</td>
+                <td><#if user.order.dateUpdate??>${user.order.dateUpdate}<#else>-</#if></td>
                 <td>
-                    <#list user.bookSet as book>
+                    <#list user.order.bookSet as book>
                         ${book.bookName}
                         <br>
                     </#list>
                 </td>
-                <td>${user.status}</td>
+                <td>${user.order.status}</td>
                 <td>
-                    <form action="/adminOrders/${user.id}" method="post" >
-                        <button type="submit" class="btn btn-primary" name="${user.id}">Delete</button>
+                    <form action="/adminOrders/${user.order.id}" method="post" >
+                        <button type="submit" class="btn btn-primary" name="${user.order.id}">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -42,41 +42,7 @@
         </tbody>
     </table>
     <@p.pager "/adminOrders" currentPage countPage/>
-<#--    <div class="container mb-4">-->
-<#--        <nav aria-label="...">-->
-<#--            <ul class="pagination pagination-sm">-->
-<#--                <#if currentPage <= 1>-->
-<#--                        <li class="page-item disabled">-->
-<#--                            <span class="page-link">Previous</span>-->
-<#--                        </li>-->
-<#--                <#else>-->
-<#--                    <li class="page-item">-->
-<#--                        <a class="page-link" href="/adminOrders?page=${currentPage - 1}">Previous</a>-->
-<#--                    </li>-->
-<#--                </#if>-->
-<#--                <#list 1..countPage as pgs>-->
-<#--                        <#if currentPage?? && currentPage == pgs>-->
-<#--                            <li class="page-item active" aria-current="page">-->
-<#--                                <span class="page-link">${pgs}<span class="sr-only">(current)</span></span>-->
-<#--                            </li>-->
-<#--                        <#else >-->
-<#--                            <li class="page-item">-->
-<#--                                <a  href="/adminOrders?page=${pgs}" class="page-link">${pgs}</a>-->
-<#--                            </li>-->
-<#--                        </#if>-->
-<#--                </#list>-->
-<#--                <#if currentPage gte countPage>-->
-<#--                    <li class="page-item disabled">-->
-<#--                        <span class="page-link" >Next</span>-->
-<#--                    </li>-->
-<#--                <#else>-->
-<#--                    <li class="page-item">-->
-<#--                        <a href="/adminOrders?page=${currentPage + 1}" class="page-link">Next</a>-->
-<#--                    </li>-->
-<#--                </#if>-->
-<#--            </ul>-->
-<#--        </nav>-->
-<#--    </div>-->
+
     <form action="/adminOrders" method="post">
         <div class="form-group ml-4">
             <h3>Update Status Order</h3>

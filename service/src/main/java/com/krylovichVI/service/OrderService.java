@@ -3,6 +3,7 @@ package com.krylovichVI.service;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.Book;
 import com.krylovichVI.pojo.Order;
+import com.krylovichVI.pojo.dto.OrdersAdminDto;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface OrderService {
     List<Order> getOrderByPage(int currentPage);
 
     long getCountOfPage();
+
+    List<OrdersAdminDto> getOrdersAdminDto(List<Order> orderByPage);
 }

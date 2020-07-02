@@ -57,8 +57,8 @@ public class ServiceConfig {
                 daoConfig.orderDao(),
                 converterConfig.authUserConverter(),
                 converterConfig.bookConverter(),
-                bookService()
-        );
+                bookService(),
+                authUserService());
     }
 
     @Bean

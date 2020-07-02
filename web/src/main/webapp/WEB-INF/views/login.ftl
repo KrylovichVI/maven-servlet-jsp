@@ -14,6 +14,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Log In</button>
     </div>
-<#--    <p style="color: red">${error}</p>-->
+    <#if error??>
+        <p style="color: red">${error}</p>
+    </#if>
 </form>
 </@c.page>

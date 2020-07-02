@@ -22,16 +22,17 @@ public class DefaultAuthUserDao implements AuthUserDao {
 
     @Override
     public AuthUserEntity getByLogin(String login) {
-        try {
-            AuthUserEntity authUser = (AuthUserEntity) factory.getCurrentSession()
+        try{
+            AuthUserEntity authUserEntityList = (AuthUserEntity) factory.getCurrentSession()
                     .createQuery("select a from AuthUserEntity a where a.username = :username")
                     .setParameter("username", login)
                     .getSingleResult();
-            return authUser;
-        } catch(NoResultException e) {
+            return authUserEntityList;
+        }catch (NoResultException e){
             logger.error("auth_user not found by login: ", login);
             return null;
         }
+
     }
 
     @Override

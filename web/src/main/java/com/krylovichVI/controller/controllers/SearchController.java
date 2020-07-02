@@ -31,8 +31,6 @@ public class SearchController {
         Model model
     ){
         Page<Book> page = searchService.findBookBySearch(filter, pageble);
-        model.addAttribute("currentPage", 1);
-        model.addAttribute("countPage", page.getTotalPages());
         model.addAttribute("page", page);
         model.addAttribute("filter", filter);
 

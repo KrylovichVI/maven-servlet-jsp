@@ -7,11 +7,14 @@ import com.krylovichVI.dao.entity.AuthUserEntity;
 import com.krylovichVI.dao.entity.BlackListEntity;
 import com.krylovichVI.pojo.AuthUser;
 import com.krylovichVI.pojo.BlackList;
+import com.krylovichVI.pojo.dto.UserOfBlackListDto;
+import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.BlackListService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultBlackListService implements BlackListService {
@@ -65,5 +68,28 @@ public class DefaultBlackListService implements BlackListService {
     @Override
     public List<BlackList> getUsersOfBlackList() {
         return blackListConverter.toDto(blackListDao.getUsersOfBlackList());
+    }
+
+    @Override
+    public List<UserOfBlackListDto> getUserNameById(List<BlackList> usersOfBlackList, AuthUserService authUserService) {
+        if(usersOfBlackList == null){
+            return null;
+        }
+        List<UserOfBlackListDto> UserOfBlackListDto = new ArrayList<>(usersOfBlackList.size());
+
+        for(BlackList user : usersOfBlackList){
+            AuthUser authUser = authUserService.getById(user.getAuthUserId());
+            UserOfBlackListDto.add(
+                    new UserOfBlackListDto(
+                            authUser.getUsername(),
+                            user.getId(),
+                            user.getAuthUserId(),
+                            user.getDateBlock(),
+                            authUser.getRole()
+                    )
+            );
+        }
+
+        return UserOfBlackListDto;
     }
 }

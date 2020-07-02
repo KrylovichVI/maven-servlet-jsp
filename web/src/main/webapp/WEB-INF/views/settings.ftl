@@ -22,19 +22,19 @@
         <div class="form-group ml-4">
             <div class="form-group col-md-2">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" name="firstName">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
             </div>
             <div class="form-group col-md-2">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" name="lastName">
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
             </div>
             <div class="form-group col-md-2">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" name="email">
+                <input type="text" class="form-control" id="email" name="email" placeholder="exemple@gmail.com">
             </div>
             <div class="form-group col-md-2">
                 <label for="phone">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone">
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="80291234567">
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </div>

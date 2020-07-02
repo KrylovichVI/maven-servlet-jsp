@@ -6,6 +6,8 @@ import com.krylovichVI.dao.converters.BookConverter;
 import com.krylovichVI.dao.converters.OrderConverter;
 import com.krylovichVI.dao.entity.OrderEntity;
 import com.krylovichVI.pojo.*;
+import com.krylovichVI.pojo.dto.OrdersAdminDto;
+import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.BookService;
 import com.krylovichVI.service.OrderService;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +24,17 @@ public class DefaultOrderService implements OrderService {
     private AuthUserConverter authUserConverter;
     private BookConverter bookConverter;
     private BookService bookService;
+    private AuthUserService authUserService;
 
 
 
-    public DefaultOrderService(OrderConverter orderConverter, OrderDao orderDao, AuthUserConverter authUserConverter, BookConverter bookConverter, BookService bookService) {
+    public DefaultOrderService(OrderConverter orderConverter, OrderDao orderDao, AuthUserConverter authUserConverter, BookConverter bookConverter, BookService bookService, AuthUserService authUserService) {
         this.orderConverter = orderConverter;
         this.orderDao = orderDao;
         this.authUserConverter = authUserConverter;
         this.bookConverter = bookConverter;
         this.bookService = bookService;
+        this.authUserService = authUserService;
     }
 
     @Transactional(readOnly = true)
@@ -125,4 +129,20 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
+    @Override
+    public List<OrdersAdminDto> getOrdersAdminDto(List<Order> orderList) {
+        if(orderList == null){
+            return null;
+        }
+
+        List<OrdersAdminDto> ordersAdminDtoList = new ArrayList<>(orderList.size());
+
+        for(Order order : orderList){
+            ordersAdminDtoList.add(new OrdersAdminDto(
+                    authUserService.getById(order.getAuthUserId()).getUsername(),
+                    order
+            ));
+        }
+        return ordersAdminDtoList;
+    }
 }

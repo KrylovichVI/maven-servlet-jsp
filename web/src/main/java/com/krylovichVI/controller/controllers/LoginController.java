@@ -46,7 +46,7 @@ public class LoginController {
     @PostMapping
     public String login(@RequestParam String login, @RequestParam String password, Model model){
         AuthUser user = authUserService.login(login, password);
-        if(blackListService.existUserInBlackList(user) && user != null){
+        if(user != null && blackListService.existUserInBlackList(user)){
             model.addAttribute("error", "This user consist of black list");
             return "redirect:/login";
         }else {

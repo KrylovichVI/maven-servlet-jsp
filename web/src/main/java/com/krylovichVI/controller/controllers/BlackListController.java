@@ -1,7 +1,7 @@
 package com.krylovichVI.controller.controllers;
 
 import com.krylovichVI.pojo.AuthUser;
-import com.krylovichVI.pojo.BlackList;
+import com.krylovichVI.pojo.dto.UserOfBlackListDto;
 import com.krylovichVI.service.AuthUserService;
 import com.krylovichVI.service.BlackListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,10 @@ public class BlackListController {
 
     @GetMapping
     public String returnUsersOfBlackList(Model model){
-        List<BlackList> usersOfBlackList = blackListService.getUsersOfBlackList();
+        List<UserOfBlackListDto> userOfBlackListDto = blackListService.getUserNameById(
+                blackListService.getUsersOfBlackList(), authUserService);
 
-        model.addAttribute("usersOfBlackList", usersOfBlackList);
+        model.addAttribute("usersOfBlackList", userOfBlackListDto);
 
         return "blackList";
     }

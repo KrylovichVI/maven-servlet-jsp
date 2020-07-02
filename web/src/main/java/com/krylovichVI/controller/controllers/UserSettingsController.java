@@ -12,13 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 @Controller
 @RequestMapping("/settings")
 public class UserSettingsController{
     private UserService userService;
+    private Validator validator;
 
     @Autowired
     public UserSettingsController(UserService userService) {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
         this.userService = userService;
     }
 
@@ -37,7 +44,8 @@ public class UserSettingsController{
             @RequestParam String lastName,
             @RequestParam String phone,
             @RequestParam String email
-                                     ){
+    ){
+
         User user = getUserInfo(authUser, firstName, lastName, phone, email);
         userService.updateUserInfo(user);
         return "redirect:/settings";

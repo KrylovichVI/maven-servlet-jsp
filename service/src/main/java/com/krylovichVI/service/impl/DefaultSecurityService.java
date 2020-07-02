@@ -17,7 +17,7 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public AuthUser login(String login, String password) {
         AuthUser authUser = authUserConverter.toDto(authUserDao.getByLogin(login));
         if(authUser == null){
